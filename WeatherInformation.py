@@ -11,9 +11,8 @@ os.system('cls' if os.name == 'nt' else 'clear')
 #Class City, Sub & Wind
 class City:
     def __init__(self):
-        self.name = 'Broitzem'
+        self.name = None
         self.temperatur = None
-        #self.time = None
         self.timezone = None
         self.time_api_data_calculation = None
         self.weather_description = None
@@ -35,7 +34,6 @@ class Wind:
         self.direction_point = None
 
 def callOpenWeatherAPI(city_name):
-    #Inner Function to pick API-Key from text file 
     def apiLogin (): 
         filename = 'OpenWeatherMap.txt'  
         try:
@@ -62,13 +60,6 @@ def callOpenWeatherAPI(city_name):
                 raise SystemExit(err)
     else: 
         return api_data
-
-# def callSunCalcAPI(city_lat,city_lon):
-#     #Call SunCalc API 
-#     complete_api_link = "https://suncalc.org/#/48.85826,2.29451,17/2015.05.11/13:15/324.0/2"
-#     api_link = requests.get(complete_api_link)
-#     api_data = api_link.json()
-#     return api_data
 
 #Convert Degree to Point, North=0°
 def  convertDegreetoPoint(degree):
@@ -186,8 +177,6 @@ def main():
     city1.name = input("Enter city name: ")
     #Get Weather Information from OpenWeatherMap.org/api
     api_data = callOpenWeatherAPI(city1.name)
-    #Get Sun Position Information from SunCalc.org
-    #SunCalc_api_data = callSunCalcAPI(city1.latitude, city1.longitute)
     #Assign general weather Informations for the choosen location
     city1.longitute = api_data['coord']['lat']
     city1.latitude = api_data['coord']['lon']
