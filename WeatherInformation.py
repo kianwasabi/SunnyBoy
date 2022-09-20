@@ -9,7 +9,10 @@ import math
 #clear interpreter console
 os.system('cls' if os.name == 'nt' else 'clear')
 
-#Class City, Sub & Wind
+#Class Definition
+#class Weather():
+#    def __init__(self):
+#    super().__init__()
 class City:
     def __init__(self, name, temperatur, timezone, time_api_data_calculation, weather_description, longitute, latitude):
         self.name = name
@@ -19,7 +22,7 @@ class City:
         self.weather_description = weather_description
         self.longitute = longitute
         self.latitude = latitude
-class Sun:
+class Sun():
     def __init__(self, cloudiness, visibility, sunrise, sunset):
         self.cloudiness = cloudiness
         self.visibility = visibility
@@ -28,6 +31,28 @@ class Sun:
         self.azimuth = None
         self.azimuth_point = None
         self.elevation = None
+class Wind():
+    def __init__(self, wind_speed, wind_direction):
+        self.speed = wind_speed
+        self.direction = wind_direction
+        self.direction_point = None
+#class Location(Time): 
+#    def __init__(self, x, y)
+#       self.x = x
+#       self.y = y
+class Time(): 
+    def __init__(self, timestamp , timezone):
+        self.year = datetime.fromtimestamp(timestamp).strftime("Y")
+        self.month = datetime.fromtimestamp(timestamp).strftime("m")
+        self.day = datetime.fromtimestamp(timestamp).strftime("d")
+        self.hour = datetime.fromtimestamp(timestamp).strftime("H")
+        self.minute = datetime.fromtimestamp(timestamp).strftime("M")
+        self.second = datetime.fromtimestamp(timestamp).strftime("S")
+        self.timezone = timezone
+    def getDate(self):
+        return "{0:02d}:{1:02d}:{2:02d}".format(self.day, self.month,self.year) 
+    def getTime(self):
+        return "{0:02d}:{1:02d}:{2:02d}".format(self.hour, self.minute,self.second)
 
 # Get the Sun's apparent location in the sky
 def sunpos(when,tz,location,refraction):
@@ -97,11 +122,7 @@ def sunpos(when,tz,location,refraction):
         elevation += (1.02 / tan(targ)) / 60
         return (round(azimuth, 2)), round(elevation, 2)
 
-class Wind:
-    def __init__(self, wind_speed, wind_direction):
-        self.speed = wind_speed
-        self.direction = wind_direction
-        self.direction_point = None
+
 
 def callOpenWeatherAPI(city_name):
     def apiLogin (): 
