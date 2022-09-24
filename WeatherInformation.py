@@ -14,11 +14,11 @@ os.system('cls' if os.name == 'nt' else 'clear')
 #    def __init__(self):
 #    super().__init__()
 class City:
-    def __init__(self, name, temperatur, timezone, time_api_data_calculation, weather_description, longitute, latitude):
+    def __init__(self, name, temperatur, timezone, time_api, weather_description, longitute, latitude):
         self.name = name
         self.temperatur = temperatur
         self.timezone = timezone
-        self.time_api_data_calculation = time_api_data_calculation
+        self.time_api = time_api
         self.weather_description = weather_description
         self.longitute = longitute
         self.latitude = latitude
@@ -42,12 +42,12 @@ class Wind():
 #       self.y = y
 class Time(): 
     def __init__(self, timestamp , timezone):
-        self.year = datetime.fromtimestamp(timestamp).strftime("Y")
-        self.month = datetime.fromtimestamp(timestamp).strftime("m")
-        self.day = datetime.fromtimestamp(timestamp).strftime("d")
-        self.hour = datetime.fromtimestamp(timestamp).strftime("H")
-        self.minute = datetime.fromtimestamp(timestamp).strftime("M")
-        self.second = datetime.fromtimestamp(timestamp).strftime("S")
+        self.year = datetime.fromtimestamp(timestamp).strftime("%Y")
+        self.month = datetime.fromtimestamp(timestamp).strftime("%m")
+        self.day = datetime.fromtimestamp(timestamp).strftime("%d")
+        self.hour = datetime.fromtimestamp(timestamp).strftime("%H")
+        self.minute = datetime.fromtimestamp(timestamp).strftime("%M")
+        self.second = datetime.fromtimestamp(timestamp).strftime("%S")
         self.timezone = timezone
     def getDate(self):
         return "{0:02d}:{1:02d}:{2:02d}".format(self.day, self.month,self.year) 
@@ -180,7 +180,7 @@ def printinTerminal(city1,wind1,sun1):
     print ("Latitude             :",city1.longitute)
     print ("Temperature          : {:.2f} °C".format(city1.temperatur))
     print ("Weather Description  :",city1.weather_description)
-    print ("Calc. Time  API-Data :",city1.time_api_data_calculation.strftime("%Y-%m-%d | %H:%M:%S"))
+    print ("Calc. Time  API-Data :",city1.time_api.strftime("%Y-%m-%d | %H:%M:%S"))
     print ("-------------------------------------------------------------")
     print ("Cloudiness           :",sun1.cloudiness,"%")
     print ("Visibility           :",sun1.visibility,"m")
@@ -194,13 +194,14 @@ def printinTerminal(city1,wind1,sun1):
 
 def main(): 
     cityname = input("Enter city name: ")
-    # --- Call API ---
     api_data = callOpenWeatherAPI(cityname)
     longitute = api_data['coord']['lat']
     latitude = api_data['coord']['lon']
-    temperatur = ((api_data['main']['temp']) - 273.15) #°F to °C
-    timezone = api_data['timezone']/60/60 #Shift in seconds from UTC 
-    time_api_data_calculation = datetime.fromtimestamp(api_data['dt'])
+    #°F to °C
+    temperatur = ((api_data['main']['temp']) - 273.15) 
+    #timezone shifted in seconds from UTC 
+    timezone = api_data['timezone']/60/60 
+    time_api = datetime.fromtimestamp(api_data['dt'])
     weather_description = api_data['weather'][0]['description']
     sunrise = datetime.utcfromtimestamp(api_data['sys']['sunrise']).strftime("%H:%M:%S")
     sunset = datetime.utcfromtimestamp(api_data['sys']['sunset']).strftime("%H:%M:%S") 
@@ -209,10 +210,10 @@ def main():
     wind_speed = api_data['wind']['speed']
     wind_direction = api_data['wind']['deg']
     # --- Initialization Objects ---
-    city1 = City(cityname, temperatur, timezone, time_api_data_calculation, weather_description, longitute, latitude)
+    city1 = City(cityname, temperatur, timezone, time_api, weather_description, longitute, latitude)
     sun1 = Sun(cloudiness, visibility, sunrise, sunset)
     wind1 = Wind(wind_speed, wind_direction)
-    sun1.azimuth, sun1.elevation = sunpos(city1.time_api_data_calculation, city1.timezone, 
+    sun1.azimuth, sun1.elevation = sunpos(city1.time_api, city1.timezone, 
                                         (city1.latitude, city1.longitute), True)
     sun1.azimuth_point = convertDegreetoPoint(sun1.azimuth)
     wind1.direction_point = convertDegreetoPoint(wind1.direction)

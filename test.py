@@ -39,37 +39,25 @@ def callOpenWeatherAPI(city_name):
 
 class Time(): 
     def __init__(self, timestamp , timezone):
-        self.year = datetime.fromtimestamp(timestamp).strftime("Y")
-        self.month = datetime.fromtimestamp(timestamp).strftime("m")
-        self.day = datetime.fromtimestamp(timestamp).strftime("d")
-        self.hours = datetime.fromtimestamp(timestamp).strftime("H")
-        self.minute = datetime.fromtimestamp(timestamp).strftime("M")
-        self.second = datetime.fromtimestamp(timestamp).strftime("S")
+        self.year = datetime.fromtimestamp(timestamp).strftime("%Y")
+        self.month = datetime.fromtimestamp(timestamp).strftime("%m")
+        self.day = datetime.fromtimestamp(timestamp).strftime("%d")
+        self.hour = datetime.fromtimestamp(timestamp).strftime("%H")
+        self.minute = datetime.fromtimestamp(timestamp).strftime("%M")
+        self.second = datetime.fromtimestamp(timestamp).strftime("%S")
         self.timezone = timezone
     def getDate(self):
         return "{0:02d}:{1:02d}:{2:02d}".format(self.day, self.month,self.year) 
     def getTime(self):
         return "{0:02d}:{1:02d}:{2:02d}".format(self.hours, self.minutes,self.seconds)
 
-class Time(): 
-    def __init__(self, timestamp , timezone):
-        self.year = 1
-        test = datetime.fromtimestamp(timestamp).strftime("Y")
-        self.month = datetime.fromtimestamp(timestamp).strftime("m")
-        self.day = datetime.fromtimestamp(timestamp).strftime("d")
-        self.hour = datetime.fromtimestamp(timestamp).strftime("H")
-        self.minute = datetime.fromtimestamp(timestamp).strftime("M")
-        self.second = datetime.fromtimestamp(timestamp).strftime("S")
-        self.timezone = timezone
-
 def main(): 
     cityname = input("Enter city name: ")
     api_data = callOpenWeatherAPI(cityname)
-    time_api_data_calculation = datetime.fromtimestamp(api_data['dt'])
-    print (time_api_data_calculation.strftime("%H"))
+    time_api = datetime.fromtimestamp(api_data['dt'])
+    print (time_api.strftime("%H"))
     t = Time(api_data['dt'],api_data['timezone']/60/60)
     print (t.hour)
-    
 
 if __name__ == '__main__':
     main()
