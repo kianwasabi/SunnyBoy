@@ -122,8 +122,6 @@ def sunpos(when,tz,location,refraction):
         elevation += (1.02 / tan(targ)) / 60
         return (round(azimuth, 2)), round(elevation, 2)
 
-
-
 def callOpenWeatherAPI(city_name):
     def apiLogin (): 
         filename = 'OpenWeatherMap.txt'  
@@ -171,7 +169,6 @@ def  convertDegreetoPoint(degree):
     if(degree>22.5):
         return 'NE'
     return 'N' 
-
 
 def printinTerminal(city1,wind1,sun1):
     print ("-------------------------------------------------------------")

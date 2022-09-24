@@ -1,10 +1,8 @@
 # --- Include Libraries ---
 import requests
 import os
-import PySimpleGUI as sg
-from datetime import datetime, timezone
 import os.path
-import math
+from datetime import datetime, timezone
 
 #clear interpreter console
 os.system('cls' if os.name == 'nt' else 'clear')
@@ -39,25 +37,24 @@ def callOpenWeatherAPI(city_name):
 
 class Time(): 
     def __init__(self, timestamp , timezone):
-        self.year = datetime.fromtimestamp(timestamp).strftime("%Y")
-        self.month = datetime.fromtimestamp(timestamp).strftime("%m")
-        self.day = datetime.fromtimestamp(timestamp).strftime("%d")
-        self.hour = datetime.fromtimestamp(timestamp).strftime("%H")
-        self.minute = datetime.fromtimestamp(timestamp).strftime("%M")
-        self.second = datetime.fromtimestamp(timestamp).strftime("%S")
+        self.year = int(datetime.fromtimestamp(timestamp).strftime("%Y"))
+        self.month = int(datetime.fromtimestamp(timestamp).strftime("%m"))
+        self.day = int(datetime.fromtimestamp(timestamp).strftime("%d"))
+        self.hour = int(datetime.fromtimestamp(timestamp).strftime("%H"))
+        self.minute = int(datetime.fromtimestamp(timestamp).strftime("%M"))
+        self.second = int(datetime.fromtimestamp(timestamp).strftime("%S"))
         self.timezone = timezone
     def getDate(self):
-        return "{0:02d}:{1:02d}:{2:02d}".format(self.day, self.month,self.year) 
+        return f"{self.day}.{self.month}.{self.year}"
     def getTime(self):
-        return "{0:02d}:{1:02d}:{2:02d}".format(self.hours, self.minutes,self.seconds)
+        return f"{self.hour}:{self.minute}:{self.minute}"
 
 def main(): 
     cityname = input("Enter city name: ")
     api_data = callOpenWeatherAPI(cityname)
     time_api = datetime.fromtimestamp(api_data['dt'])
-    print (time_api.strftime("%H"))
-    t = Time(api_data['dt'],api_data['timezone']/60/60)
-    print (t.hour)
+    time1 = Time(api_data['dt'],api_data['timezone']/60/60)
+    time1.getDate()
 
 if __name__ == '__main__':
     main()
