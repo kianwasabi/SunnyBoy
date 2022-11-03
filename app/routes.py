@@ -6,6 +6,10 @@ from database.db import *
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
+@app.route('/')
+def home():   
+    return "Hello"
+
 @app.route('/api/sunpositions', methods=['GET'])
 def api_get_sunpositions():
     return jsonify(get_sunpositions())
