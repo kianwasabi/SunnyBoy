@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=C:\Users\Besitzer\Documents\GitHub\Weather_Information_GUI\.venv
+set VIRTUAL_ENV=C:\Users\Besitzer\Documents\GitHub\Weather_Information\.venv
 
 if not defined PROMPT set PROMPT=$P$G
 

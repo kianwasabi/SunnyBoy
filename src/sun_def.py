@@ -1,5 +1,5 @@
-from location_def import Location
-from time_def import Time
+from src.location_def import Location
+from src.time_def import Time
 import math
 
 class Sun(Location):

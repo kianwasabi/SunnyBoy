@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\Besitzer\Documents\GitHub\Weather_Information_GUI\.venv"
+VIRTUAL_ENV="C:\Users\Besitzer\Documents\GitHub\Weather_Information\.venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

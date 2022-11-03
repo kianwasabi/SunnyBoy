@@ -1,4 +1,4 @@
-from location_def import Location
+from src.location_def import Location
 
 class Weather(Location):
     def __init__(self,temperatur, weather_descr, cloudiness, visibility, name, longitude, latitude, timestamp, timezone):

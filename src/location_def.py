@@ -1,4 +1,4 @@
-from time_def import Time
+from src.time_def import Time
 
 class Location(Time): 
     def __init__(self,name,longitude, latitude, timestamp, timezone):

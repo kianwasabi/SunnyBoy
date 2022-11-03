@@ -1,4 +1,4 @@
-from location_def import Location
+from src.location_def import Location
 
 class Wind(Location):
     def __init__(self, wind_speed, wind_direction, name,longitude, latitude, timestamp, timezone):

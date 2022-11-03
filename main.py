@@ -5,12 +5,14 @@ import os.path
 from datetime import datetime
 import pytz
 from timezonefinder import TimezoneFinder
-# import modules
-from weatherAPI_call import callOpenWeatherAPI
-# import classes
-from sun_def import Sun 
-from weather_def import Weather
-from wind_def import Wind
+
+
+# import classes & modules from src
+from src.weatherAPI_call import callOpenWeatherAPI
+from src.sun_def import Sun 
+from src.weather_def import Weather
+from src.wind_def import Wind
+
 
 def printinTerminal(weather,wind,sun):
     #clear interpreter console
@@ -53,7 +55,29 @@ def main():
     wind = Wind(wind_speed, wind_direction, cityname, longitude, latitude, time_in_tz,timezone)
     sun = Sun(timestamp_sunrise,timestamp_sunset, cityname, longitude, latitude, time_in_tz,timezone)
     #print in terminal
-    printinTerminal(weather,wind,sun)
-    
+    printinTerminal(weather,wind,sun) 
+    #
+# users = []
+# user0 = {
+#     "name": "Charles Effiong",
+#     "email": "charles@gamil.com",
+#     "phone": "067765665656",
+#     "address": "Lui Str, Innsbruck",
+#     "country": "Austria"
+# }
+
+# users.append(user0)
+
+#create_db_table()
+
+#for i in sunpositions:
+#    print(insert_sunposition(i))
+
+#run flask app
+#app.debug = True
+#app.run(debug=True)
+#app.run()
+#app.run(host="127.0.0.1", port=8080, debug=True) #creat Web Application with Flask & test locally
+
 if __name__ == '__main__':
     main()
