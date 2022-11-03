@@ -56,7 +56,12 @@ add_library(h3::h3 STATIC IMPORTED)
 set_target_properties(h3::h3 PROPERTIES
   INTERFACE_COMPILE_DEFINITIONS "H3_PREFIX="
   INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/include"
+  INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:\$<\$<CONFIG:Debug>:--coverage>>;/Applications/Xcode_13.2.1.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk/usr/lib/libm.tbd"
 )
+
+if(CMAKE_VERSION VERSION_LESS 2.8.12)
+  message(FATAL_ERROR "This file relies on consumers using CMake 2.8.12 or greater.")
+endif()
 
 # Load information for each installed configuration.
 get_filename_component(_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
