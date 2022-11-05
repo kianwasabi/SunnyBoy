@@ -13,7 +13,7 @@ from .wind_def import Wind
 
 def printinTerminal(weather,wind,sun):
     #clear interpreter console
-    os.system('cls' if os.name == 'nt' else 'clear')
+    #os.system('cls' if os.name == 'nt' else 'clear')
     print("---------------------------------------------------------------")
     print("Location: ",weather.getLocationName(),"(",weather.getLongitude(),";",weather.getLatitude(),")")
     print("Time:", weather.getDate(),weather.getTime())
@@ -23,7 +23,8 @@ def printinTerminal(weather,wind,sun):
 
 def modulWeatherInfo(): 
     #Call API
-    cityname = input("Enter city name: ")
+    #cityname = input("Enter city name: ")
+    cityname = "Braunschweig"
     api_data = callOpenWeatherAPI(cityname)
     latitude = api_data['coord']['lat']
     longitude= api_data['coord']['lon']
@@ -53,3 +54,4 @@ def modulWeatherInfo():
     sun = Sun(timestamp_sunrise,timestamp_sunset, cityname, longitude, latitude, time_in_tz,timezone)
     #print in terminal
     printinTerminal(weather,wind,sun)
+    return weather,wind,sun

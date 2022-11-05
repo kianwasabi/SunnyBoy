@@ -11,10 +11,12 @@ class Sun(Location):
         self.sunset = Time(timestamp_sunset, timezone)
         self.azimuth, self.elevation  = self.SunPosition()
     def getTimeSunrise(self):
-        return self.sunrise.getTime()
+        #return self.sunrise.getTime()
+        return f"{self.sunrise.getTime()}"
     def getTimeSunset(self):
         #self.sunset.editTimewithTimezone()
-        return self.sunset.getTime() 
+        #return self.sunset.getTime()
+        return f"{self.sunset.getTime()}"
     def getAzimuth(self):
         return f"{self.azimuth} °"
     def getElevation(self):

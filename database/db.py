@@ -2,54 +2,44 @@ import sqlite3
 from sqlite3 import Error
 
 def connect_to_db():
-    #create a database connection to the SQLite database specified by db_file
-    #param db_file: database file
-    #return: Connection object or None
     conn = None
     try:
         conn = sqlite3.connect('database.db')
     except Error as e:
+        print("🥲 Connection to DB failed.")
         print(e)
     return conn
 
 
-def create_db_table(conn, create_table_sql):
-    #create a table from the create_table_sql statement
-    #param conn: Connection object
-    #param create_table_sql: a CREATE TABLE statement
-    #return: None
+def create_db_table(create_table_sql):
     try:
         conn = connect_to_db()
-        conn.execute('''DROP TABLE sunpositions''')
-        conn.execute('''
-            CREATE TABLE sunpositions (
-                sid INTEGER PRIMARY KEY NOT NULL,
-                sazimuth TEXT NOT NULL,
-                selevation TEXT NOT NULL,
-                sdate TEXT NOT NULL,
-                stime TEXT NOT NULL
-            );
-        ''')
-
+        cur = conn.cursor()
+        cur.execute(create_table_sql)
         conn.commit()
-        print("Sun Position table created successfully")
-    except:
-        print("Sun Position creation failed - Maybe table")
+        print("😁 Table created successfully.")
+    except Error as e:
+        print("🥲 Sun Position creation failed.")
+        print(e)
     finally:
         conn.close()
 
 
-def insert_sunposition(sunposition):
+def insert_sunposition(suninfo):
     inserted_sunposition = {}
     try:
         conn = connect_to_db()
         cur = conn.cursor()
-        cur.execute("INSERT INTO sunposition (sazimuth, selevation, sdate, stime) VALUES (?, ?, ?, ?)", (sunposition['sazimuth'], sunposition['selevation'], sunposition['sdate'], sunposition['stime']))
+        sql = "INSERT INTO sunpositions (sazimuth, selevation, ssunrise, ssunset) VALUES (?,?,?,?)"
+        val = (suninfo['azimuth'], suninfo['elevation'], suninfo['sunrise'], suninfo['sunset'])
+        cur.execute(sql,val)
         conn.commit()
         inserted_sunposition = get_sunposition_by_sid(cur.lastrowid)
-    except:
-        conn().rollback
-
+        print("⏏︎ ",cur.rowcount, "record inserted.","/",inserted_sunposition)
+    except Error as e:
+        print("🥲 insert into database failed.")
+        print(e)
+        #conn.rollback()
     finally:
         conn.close()
 
@@ -71,8 +61,8 @@ def get_sunpositions():
             sunposition["sid"] = i["sid"]
             sunposition["sazimuth"] = i["sazimuth"]
             sunposition["selevation"] = i["selevation"]
-            sunposition["sdate"] = i["sdate"]
-            sunposition["stime"] = i["stime"]
+            sunposition["ssunrise"] = i["ssunrise"]
+            sunposition["ssunset"] = i["ssunset"]
             sunpositions.append(sunposition)
 
     except:
@@ -94,8 +84,8 @@ def get_sunposition_by_sid(sunposition_sid):
         sunposition["sid"] = row["sid"]
         sunposition["sazimuth"] = row["sazimuth"]
         sunposition["selevation"] = row["selevation"]
-        sunposition["sdate"] = row["sdate"]
-        sunposition["stime"] = row["stime"]
+        sunposition["ssunrise"] = row["ssunrise"]
+        sunposition["ssunset"] = row["ssunset"]
     except:
         sunposition = {}
 
@@ -107,7 +97,7 @@ def update_sunposition(sunposition):
     try:
         conn = connect_to_db()
         cur = conn.cursor()
-        cur.execute("UPDATE sunpositions SET sazimuth = ?, selevation = ?, sdate = ?, stime = ? WHERE sid =?", (sunposition["sazimuth"], sunposition["selevation"], sunposition["sdate"], sunposition["stime"], sunposition["sid"]))
+        cur.execute("UPDATE sunpositions SET sazimuth = ?, selevation = ?, ssunrise = ?, ssunset = ? WHERE sid =?", (sunposition["sazimuth"], sunposition["selevation"], sunposition["ssunrise"], sunposition["ssunset"], sunposition["sid"]))
         conn.commit()
         #return the sunposition
         updated_sunposition = get_sunposition_by_sid(sunposition["sid"])
