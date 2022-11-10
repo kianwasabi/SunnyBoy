@@ -1,2 +1,5 @@
-# Weather_Information_GUI
- Weather Information with PySimpleGUI
+# Weather_Information
+- Flask
+- Rest API, JSON
+- Web App
+.... IN PROGRESS ... 
