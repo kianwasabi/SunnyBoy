@@ -9,8 +9,11 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 
 # --- PAGES ---
 @app.route('/')
-def startpage():
+def home():
     return render_template("home.html")
+@app.route('/api')
+def api():
+    return render_template("api.html")
 @app.route('/about')
 def about():
     return render_template("about.html")

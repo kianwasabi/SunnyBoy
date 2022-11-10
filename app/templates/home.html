@@ -1,20 +1,10 @@
-{% extends "base.html" %}
-{% block title %}Index{% endblock %}
-{% block head %}
-    {{ super() }}
-    <style type="text/css">
-        .important { color: #336699; }
-    </style>
-{% endblock %}
+{% extends "layout.html" %}
 {% block content %}
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
-        <title>FlaskBlog</title>
-    </head>
-        <h1>Welcome to "Sunny Boy"</h1>
-    <body>
-</body>
-</html>
+    
+<div class="home">
+    <h1>Home</h1>
+    <p>Text Home-Page</p>
+</div>
+
 {% endblock %}
+
