@@ -1,15 +1,16 @@
 import sqlite3
 from sqlite3 import Error
+import os
 
+# --- Connect & Create to database --- 
 def connect_to_db():
     conn = None
     try:
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(f"{os.path.dirname(os.path.abspath(__file__))}/database.db")
     except Error as e:
         print("🥲 Connection to DB failed.")
         print(e)
     return conn
-
 
 def create_db_table(create_table_sql):
     try:
@@ -18,13 +19,12 @@ def create_db_table(create_table_sql):
         cur.execute(create_table_sql)
         conn.commit()
         print("😁 Table created successfully.")
+        conn.close()
     except Error as e:
         print("🥲 Sun Position creation failed.")
         print(e)
-    finally:
-        conn.close()
 
-
+# --- insert/get/update/delte in sun table ---
 def insert_sunposition(suninfo):
     inserted_sunposition = {}
     try:

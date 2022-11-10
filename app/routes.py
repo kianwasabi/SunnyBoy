@@ -7,13 +7,17 @@ from weatherinfo.modul_weather_Information import *
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-#StartPage
+# --- PAGES ---
 @app.route('/')
 def startpage():
-    return "Home"
-    #return render_template('home.html')
+    return render_template("home.html")
+@app.route('/about')
+def about():
+    return render_template("about.html")
 
-#api anfragen, dann wetterdaten generieren und zurückschicken#
+
+# --- API ---
+# Sun Informations
 @app.route('/api/getallsunpositions', methods=['GET'])
 def api_get_all_sunpositions():
     print("🥰 calls route .../api/getallsunpositions")

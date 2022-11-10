@@ -18,9 +18,9 @@ class Sun(Location):
         #return self.sunset.getTime()
         return f"{self.sunset.getTime()}"
     def getAzimuth(self):
-        return f"{self.azimuth} °"
+        return f"{self.azimuth}"
     def getElevation(self):
-        return f"{self.elevation} °"
+        return f"{self.elevation}"
     def getSunPosition(self):
         return self.azimuth, self.elevation
     def SunPosition(self):
