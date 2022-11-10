@@ -1,20 +1,21 @@
 import requests
 
 def callOpenWeatherAPI(city_name):
-    def apiLogin (): 
-        filename = 'OpenWeatherMap.txt'  
-        try:
-            with open(filename) as file:
-                lines = file.readlines()
-            user_api = lines[-1]
-            return user_api
-        except FileNotFoundError as err: 
-            print(filename,"not found")
-            raise SystemExit(err)
-        else: 
-            return user_api
-    user_api = apiLogin()
+    # def apiLogin (): 
+    #     filename = 'OpenWeatherMap.txt'  
+    #     try:
+    #         with open(filename) as file:
+    #             lines = file.readlines()
+    #         user_api = lines[-1]
+    #         return user_api
+    #     except FileNotFoundError as err: 
+    #         print(filename,"not found")
+    #         raise SystemExit(err)
+    #     else: 
+    #         return user_api
+    # user_api = apiLogin()
 
+    user_api = "4b8f1ddd0540ebd49a6b0ca7927e3534"
     #Call OpenWeatherMap API 
     try: 
         complete_api_link = "https://api.openweathermap.org/data/2.5/weather?q="+city_name+"&appid="+user_api
