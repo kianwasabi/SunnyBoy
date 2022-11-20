@@ -1,23 +1,20 @@
-from datetime import datetime, timezone
-
 class Time(): 
     def __init__(self, timestamp , timezone):
-        self.year = timestamp.year #timestamp.strftime("%Y") 
-        self.month = timestamp.month #timestamp.strftime("%m")
-        self.day = timestamp.day #timestamp.strftime("%d") #
-        self.hour = timestamp.hour #timestamp.strftime("%H") #
-        self.minute = timestamp.minute #timestamp.strftime("%M") #
-        self.second = timestamp.second# timestamp.strftime("%S") #
-        # self.year = int(datetime.fromtimestamp(timestamp).strftime("%Y"))
-        # self.month = int(datetime.fromtimestamp(timestamp).strftime("%m"))
-        # self.day = int(datetime.fromtimestamp(timestamp).strftime("%d"))
-        # self.hour = int(datetime.fromtimestamp(timestamp).strftime("%H"))
-        # self.minute = int(datetime.fromtimestamp(timestamp).strftime("%M"))
-        # self.second = int(datetime.fromtimestamp(timestamp).strftime("%S"))
+        self.year = timestamp.year
+        self.month = timestamp.month
+        self.day = timestamp.day
+        self.hour = timestamp.hour
+        self.minute = timestamp.minute
+        self.second = timestamp.second
         self.timezone = timezone
     def getDate(self):
+        '''return date at timezone - string'''
         return f"{self.day}.{self.month}.{self.year}"
     def getTime(self):
+        '''return time at Timezone - string'''
         return f"{self.hour}:{self.minute}:{self.minute}"
-    def editTimewithTimezone(self):
+    def getTimezone(self):
+        '''return Timezone - string'''
+        return f"{self.timezone}"
+    def _editTimewithTimezone(self):
         self.hour = self.hour + self.timezone

@@ -3,14 +3,13 @@ from .location_def import Location
 class Wind(Location):
     def __init__(self, wind_speed, wind_direction, name,longitude, latitude, timestamp, timezone):
         Location.__init__(self, name, longitude, latitude, timestamp, timezone)
-        #super().__init__(self,name,longitude, latitude, timestamp, timezone)
         self.speed = wind_speed
         self.direction = wind_direction
     def getWindSpeed(self):
-        return f"{self.speed} km/h"
-    def  getDirectionDegree(self):
-        return f"{self.direction} °"
-    def  getDirectionPoint(self):
+        return f"{self.speed}"
+    def getDirectionDegree(self):
+        return f"{self.direction}"
+    def getDirectionPoint(self):
         if(self.direction>337.5):
             return 'N'
         if(self.direction>292.5):

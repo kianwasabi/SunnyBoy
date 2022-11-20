@@ -4,7 +4,6 @@ import os.path
 from datetime import datetime
 import pytz
 from timezonefinder import TimezoneFinder
-#include scipts
 from .weatherAPI_call import callOpenWeatherAPI
 from .sun_def import Sun 
 from .weather_def import Weather
@@ -15,10 +14,10 @@ def printinTerminal(weather,wind,sun):
     #clear interpreter console
     #os.system('cls' if os.name == 'nt' else 'clear')
     print("---------------------------------------------------------------")
-    print("Location: ",weather.getLocationName(),"(",weather.getLongitude(),";",weather.getLatitude(),")")
-    print("Time:", weather.getDate(),weather.getTime())
-    print("Wind:", wind.getWindSpeed(), "from",wind.getDirectionPoint(),"(",wind.getDirectionDegree(),")")
-    print("Sun:", "Position:","(",sun.getAzimuth(),";",sun.getElevation(),")","Sunrise:", sun.getTimeSunrise(),"Sunset:",sun.getTimeSunset())
+    print("Location:",weather.getLocationName(),"(",weather.getLongitude(),";",weather.getLatitude(),")")
+    print("Time:",weather.getDate(),weather.getTime())
+    print("Wind:",wind.getWindSpeed(),"from",wind.getDirectionPoint(),"(",wind.getDirectionDegree(),")")
+    print("Sun:","Position:","(",sun.getAzimuth(),";",sun.getElevation(),")","Sunrise:",sun.getTimeSunrise(),"Sunset:",sun.getTimeSunset())
     print("---------------------------------------------------------------")
 
 def modulWeatherInfo(): 
@@ -31,9 +30,6 @@ def modulWeatherInfo():
     temperatur = ((api_data['main']['temp']) - 273.15) #°F to °C
     weather_description = api_data['weather'][0]['description']
     timezone = api_data['timezone'] #timezone in seconds unix, UTC
-    #time_api = api_data['dt'] #api time of data caluclation, timestamp unix, UTC
-    #time_in_tz = time_api + timezone
-    #time_in_tz = datetime.fromtimestamp(time_in_tz)
     timezone_at = TimezoneFinder().timezone_at(lng=longitude,lat=latitude)
     tz = pytz.timezone(timezone_at)
     time_in_tz = datetime.now(tz)

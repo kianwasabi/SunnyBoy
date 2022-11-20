@@ -1,21 +1,16 @@
 import math
-
 from weatherinfo.location_def import Location
 from weatherinfo.time_def import Time
 
 class Sun(Location):
     def __init__(self, timestamp_sunrise, timestamp_sunset, name, longitude, latitude, timestamp, timezone):
         Location.__init__(self, name, longitude, latitude, timestamp, timezone)
-        #super().__init__(self,name,longitude, latitude, timestamp, timezone)
         self.sunrise = Time(timestamp_sunrise, timezone)
         self.sunset = Time(timestamp_sunset, timezone)
-        self.azimuth, self.elevation  = self.SunPosition()
+        self.azimuth, self.elevation  = self._SunPosition()
     def getTimeSunrise(self):
-        #return self.sunrise.getTime()
         return f"{self.sunrise.getTime()}"
     def getTimeSunset(self):
-        #self.sunset.editTimewithTimezone()
-        #return self.sunset.getTime()
         return f"{self.sunset.getTime()}"
     def getAzimuth(self):
         return f"{self.azimuth}"
@@ -23,7 +18,11 @@ class Sun(Location):
         return f"{self.elevation}"
     def getSunPosition(self):
         return self.azimuth, self.elevation
-    def SunPosition(self):
+    def _SunPosition(self):
+        ''' 
+        Calculate Azimuth and Elevation
+        Source: https://levelup.gitconnected.com/python-sun-position-for-solar-energy-and-research-7a4ead801777
+        '''
         refraction = True
         year = self.year
         month = self.month
