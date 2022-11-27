@@ -1,43 +1,61 @@
---DROP TABLE IF EXISTS user;
-CREATE TABLE user(
-  uid integer PRIMARY KEY, 
-  username VARCHAR(15),
-  apikey VARCHAR(32)
+CREATE TABLE IF NOT EXISTS recipe(
+  recipe_id   INTEGER PRIMARY KEY, 
+  description TEXT NOT NULL
 );
 
---DROP TABLE IF EXISTS weatherinformation;
-CREATE TABLE weatherinformation(
-  wid interger PRIMARY KEY, 
-  locationname VARCHAR(32), 
-  longitude VARCHAR(32),
-  latitude VARCHAR(32), 
-  location_time VARCHAR(32), 
-  timezone VARCHAR(32), 
-  azimuth VARCHAR(32),
-  elevation VARCHAR(32),
-  sunrise VARCHAR(32),
-  sunset VARCHAR(32), 
-  wind_speed VARCHAR(32),
-  wind_direction VARCHAR(32),
-  temperatur VARCHAR(32),
-  cloudiness VARCHAR(32),
-  weather_description VARCHAR(32), 
-  visibility VARCHAR(32)
+CREATE TABLE IF NOT EXISTS step(
+  step_id INTEGER PRIMARY KEY, 
+  step    TEXT NOT NULL
 );
 
---DROP TABLE IF EXISTS panel;
-CREATE TABLE panel(
-  pid integer PRIMARY KEY, 
-  val1 VARCHAR(32),
-  val2 VARCHAR(32)
+CREATE TABLE IF NOT EXISTS recipe_step(
+  fk_recipe   INTEGER, 
+  fk_step     INTEGER, 
+  FOREIGN KEY (fk_recipe) REFERENCES recipe(recipe_id),
+  FOREIGN KEY (fk_step)   REFERENCES step(step_id)--,
+  --PRIMARY KEY (fk_recipe, fk_step)
 );
 
---DROP TABLE IF EXISTS requests;
-CREATE TABLE requests (
-  rid integer PRIMARY KEY,
-  time_req TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
-  uid integer, 
-  pid integer,
-  FOREIGN KEY (uid) REFERENCES user (uid),
-  FOREIGN KEY (pid) REFERENCES weatherinformation (pid)
-); 
+CREATE TABLE IF NOT EXISTS device(
+  device_id           INTEGER PRIMARY KEY, 
+  devicename          TEXT NOT NULL, 
+  apikey              TEXT NOT NULL,
+  fk_recipe_to_device INTEGER,
+  FOREIGN KEY(fk_recipe_to_device) REFERENCES recipe(recipe_id)
+);
+
+CREATE TABLE IF NOT EXISTS weatherinformation(
+  weather_id          INTEGER PRIMARY KEY, 
+  locationname        TEXT NOT NULL,
+  longitude           TEXT NOT NULL,
+  latitude            TEXT NOT NULL, 
+  location_time       TEXT NOT NULL, 
+  timezone            TEXT NOT NULL, 
+  azimuth             TEXT NOT NULL,
+  elevation           TEXT NOT NULL,
+  sunrise             TEXT NOT NULL,
+  sunset              TEXT NOT NULL, 
+  wind_speed          TEXT NOT NULL,
+  wind_direction      TEXT NOT NULL,
+  temperatur          TEXT NOT NULL,
+  cloudiness          TEXT NOT NULL,
+  weather_description TEXT NOT NULL, 
+  visibility          TEXT NOT NULL, 
+  created             TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP--,
+  --fk_device_id INTEGER, 
+  --FOREIGN KEY (fk_device_id) REFERENCES device (device_id) 
+);
+
+CREATE TABLE IF NOT EXISTS task(
+  task_id           INTEGER PRIMARY KEY, 
+  discription       TEXT NOT NULL,
+  fk_task_to_device INTEGER, 
+  FOREIGN KEY (fk_task_to_device) REFERENCES device (device_id)
+);
+
+CREATE TABLE IF NOT EXISTS solarpanel(
+  solarpanel_id   INTEGER PRIMARY KEY, 
+  value1          INTEGER,
+  value2          INTEGER, 
+  adjusted        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);

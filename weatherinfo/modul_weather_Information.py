@@ -49,5 +49,5 @@ def modulWeatherInfo():
     wind = Wind(wind_speed, wind_direction, cityname, longitude, latitude, time_in_tz,timezone)
     sun = Sun(timestamp_sunrise,timestamp_sunset, cityname, longitude, latitude, time_in_tz,timezone)
     #print in terminal
-    printinTerminal(weather,wind,sun)
+    #printinTerminal(weather,wind,sun)
     return weather,wind,sun
