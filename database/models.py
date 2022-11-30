@@ -32,7 +32,7 @@ def drop_db_table():
     except Error as e: 
         print(f"👎 Dropping tables failed. Error:{e}")
 
-def create_db_table(filename_schema):
+def create_db_table(filename_schema, filename_recipescript):
     ''' 
     Creates database
     () -> str: filename of schema 
@@ -42,8 +42,12 @@ def create_db_table(filename_schema):
         cur = conn.cursor()
         with open(f"{os.path.dirname(os.path.abspath(__file__))}/{filename_schema}") as f:
             cur.executescript(f.read())
-        conn.commit()
         print("👍 Tables created successfully.")
+        conn.commit()
+        with open(f"{os.path.dirname(os.path.abspath(__file__))}/{filename_recipescript}") as f:
+            cur.executescript(f.read())
+        print("👍 Recipe saved into database.")
+        conn.commit()
         conn.close()
     except Error as e:
         print(f"👎 Create tables failed. Error:{e}")
@@ -85,6 +89,25 @@ def refresh_weatherinformation():
     finally:
         conn.close()
     return inserted_weatherinformation
+
+def get_recipe_by_device_id(device_id):
+    recipe = {}
+    try:
+        conn = connect_to_db()
+        cur = conn.cursor(f"SELECT step.http_typ,step.step FROM step            \
+                            WHERE step.step_id IN                               \
+                            (SELECT recipe_step.fk_step FROM recipe_step        \
+                            WHERE recipe_step.fk_recipe =                       \
+                                (SELECT device.fk_recipe_to_device FROM device  \
+                                    WHERE device.device_id = {device_id}        \
+                                )                                               \
+                            );")
+        recipe = cur.fetchall()
+    except Error as e:
+        print(f"👎 Fetch Recipe failed. Error: {e}")
+    finally:
+        conn.close()
+    return recipe
 
 def get_current_weatherinformation():
     weatherinformation = {}

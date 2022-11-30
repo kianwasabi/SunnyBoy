@@ -5,7 +5,7 @@ import socket
 
 def main(): 
     drop_db_table()
-    create_db_table("schema.sql")
+    create_db_table("schema.sql","query.sql")
     try: 
         hostname = socket.gethostname()
         hostIP = socket.gethostbyname(hostname)

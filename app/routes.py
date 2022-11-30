@@ -22,12 +22,12 @@ def create_message(key:str, decive:str, data:dict):
             "TimeStamp": datetime.now()
         },
         "Data": {
-            data
         }
     }
-    if (key[1] == 1):#1:Request
+    message["Data"].update(data)
+    if (key[1] == '1'):#1:Request
         message["RequestData"] = message.pop("Data")
-    if (key[1] == 2):#2:Respone   
+    if (key[1] == '2'):#2:Respone   
         message["ResponseData"] = message.pop("Data")
     return message
 
@@ -50,7 +50,8 @@ def about():
 def api_requestrecipe():
     #receive data from client
     api_data = request.get_json() 
-
+    Device = api_data['Device']
+    
     #message back
     key = "0120"
     device = hostIP
@@ -65,7 +66,7 @@ def api_post_weatherinformation_refresh():
     key = "1120"
     device = hostIP
     data = {
-        "Response": f"Weatherinformation refreshed at: {datetime.now()}"
+        "Response": f"Weatherinformation refreshed at {datetime.now()}."
     }
     response_message = create_message(key,device,data)
     return jsonify(response_message) 

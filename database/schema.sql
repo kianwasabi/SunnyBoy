@@ -4,8 +4,9 @@ CREATE TABLE IF NOT EXISTS recipe(
 );
 
 CREATE TABLE IF NOT EXISTS step(
-  step_id INTEGER PRIMARY KEY, 
-  step    TEXT NOT NULL
+  step_id   INTEGER PRIMARY KEY, 
+  http_typ  TEXT NOT NULL,
+  step      TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS recipe_step(
