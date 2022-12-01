@@ -9,7 +9,7 @@ def main():
     try: 
         hostname = socket.gethostname()
         hostIP = socket.gethostbyname(hostname)
-        app.run(hostIP, port=8080)#, debug=True)
+        app.run(hostIP, port=8080, debug=True)
         print("🫡 Server started")
     except Error as e:
         print (f"Starting Server failed - Error: {e}")

@@ -32,10 +32,11 @@ def drop_db_table():
     except Error as e: 
         print(f"👎 Dropping tables failed. Error:{e}")
 
-def create_db_table(filename_schema, filename_recipescript):
+def create_db_table(filename_schema:str, filename_recipescript:str):
     ''' 
-    Creates database
-    () -> str: filename of schema 
+    create database and insert device recipes
+    :param filename_schema: filename of schema
+    :param filename_recipescript: filename of recipe script
     '''
     try:
         conn = connect_to_db()
@@ -44,13 +45,46 @@ def create_db_table(filename_schema, filename_recipescript):
             cur.executescript(f.read())
         print("👍 Tables created successfully.")
         conn.commit()
+        conn.close()
+    except Error as e:
+        print(f"👎 Create tables failed. Error:{e}")
+
+    try: 
+        conn = connect_to_db()
+        cur = conn.cursor()
         with open(f"{os.path.dirname(os.path.abspath(__file__))}/{filename_recipescript}") as f:
             cur.executescript(f.read())
         print("👍 Recipe saved into database.")
         conn.commit()
         conn.close()
     except Error as e:
-        print(f"👎 Create tables failed. Error:{e}")
+        print(f"👎 Saving Recipe failed. Error:{e}")        
+
+def get_recipe_by_device_id(device_id):
+    ''' 
+    get device recipe from database
+    :param filename_schema: filename of schema
+    :param filename_recipescript: filename of recipe script
+    '''
+    recipe_list = []
+    #try:
+    conn = connect_to_db()
+    conn.row_factory = sqlite3.Row
+    sql = "SELECT step.http_typ,step.step FROM step WHERE step.step_id IN (SELECT recipe_step.fk_step FROM recipe_step WHERE recipe_step.fk_recipe = (SELECT device.fk_recipe_to_device FROM device WHERE device.device_id = ?))"
+    args = (device_id,)
+    cur = conn.cursor()
+    cur = conn.execute(sql,args)
+    rows = cur.fetchall()
+    for i in rows:
+        tuple_in_recipe_list = {}
+        tuple_in_recipe_list["http_typ"] = i["http_typ"]
+        tuple_in_recipe_list["step"] = i["step"]
+        recipe_list.append(tuple_in_recipe_list)
+    #except Error as e:
+        #print(f"👎 Fetch Recipe failed. Error: {e}")
+    #finally:
+    conn.close()
+    return recipe_list
 
 def refresh_weatherinformation(): 
     '''
@@ -79,35 +113,17 @@ def refresh_weatherinformation():
         conn = connect_to_db()
         cur = conn.cursor()
         sql = "INSERT INTO weatherinformation (locationname, longitude, latitude, location_time, timezone, azimuth, elevation, sunrise, sunset, wind_speed, wind_direction, temperatur, cloudiness, weather_description, visibility) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
-        val = (weatherinformation['locationname'], weatherinformation['longitude'], weatherinformation['latitude'], weatherinformation['location_time'], weatherinformation['timezone'], weatherinformation['azimuth'], weatherinformation['elevation'], weatherinformation['sunrise'], weatherinformation['sunset'], weatherinformation['wind_speed'],  weatherinformation['wind_direction'], weatherinformation['temperatur'], weatherinformation['cloudiness'], weatherinformation['weather_description'],weatherinformation['visibility'])
-        cur.execute(sql,val)
+        args = (weatherinformation['locationname'], weatherinformation['longitude'], weatherinformation['latitude'], weatherinformation['location_time'], weatherinformation['timezone'], weatherinformation['azimuth'], weatherinformation['elevation'], weatherinformation['sunrise'], weatherinformation['sunset'], weatherinformation['wind_speed'],  weatherinformation['wind_direction'], weatherinformation['temperatur'], weatherinformation['cloudiness'], weatherinformation['weather_description'],weatherinformation['visibility'])
+        cur.execute(sql,args)
         conn.commit()
         inserted_weatherinformation = get_weatherinformation_by_id(cur.lastrowid)
-        print(f"⏏︎ {cur.rowcount} record inserted. {inserted_weatherinformation}")
+        #print(f"⏏︎ {cur.rowcount} record inserted. {inserted_weatherinformation}")
+        print(f"⏏︎ {cur.rowcount} weather record inserted into database.")
     except Error as e:
         print(f"👎 Insert into database failed. Error: {e}")
     finally:
         conn.close()
     return inserted_weatherinformation
-
-def get_recipe_by_device_id(device_id):
-    recipe = {}
-    try:
-        conn = connect_to_db()
-        cur = conn.cursor(f"SELECT step.http_typ,step.step FROM step            \
-                            WHERE step.step_id IN                               \
-                            (SELECT recipe_step.fk_step FROM recipe_step        \
-                            WHERE recipe_step.fk_recipe =                       \
-                                (SELECT device.fk_recipe_to_device FROM device  \
-                                    WHERE device.device_id = {device_id}        \
-                                )                                               \
-                            );")
-        recipe = cur.fetchall()
-    except Error as e:
-        print(f"👎 Fetch Recipe failed. Error: {e}")
-    finally:
-        conn.close()
-    return recipe
 
 def get_current_weatherinformation():
     weatherinformation = {}
@@ -116,8 +132,9 @@ def get_current_weatherinformation():
         conn.row_factory = sqlite3.Row
         cur = conn.cursor()
         weatherinformation = get_weatherinformation_by_id(cur.lastrowid)
+        print(cur.lastrowid)
     except Error as e:  
-        print(f"👎 Get from database failed. Error: {e}")
+        print(f"👎 Get weatherinfos from database failed. Error: {e}")
     finally:
         conn.close()
     return weatherinformation
@@ -154,7 +171,8 @@ def get_weatherinformation_by_id(weatherinformation_id):
     return weatherinformation
 
 def get_current_sunposition():
-    sunposition = []
+    #sunposition = []
+    sunposition = {}
     try:
         conn = connect_to_db()
         conn.row_factory = sqlite3.Row
@@ -167,7 +185,8 @@ def get_current_sunposition():
     return sunposition
 
 def get_sunposition_by_id():
-    sunposition = []
+    #sunposition = []
+    sunposition = {}
     try:
         conn = connect_to_db()
         conn.row_factory = sqlite3.Row
@@ -175,12 +194,12 @@ def get_sunposition_by_id():
         cur.execute("SELECT azimuth, elevation FROM weatherinformation")
         rows = cur.fetchall()
         for i in rows:
-            sunposition = {}
+            #sunposition = {}
             sunposition["azimuth"] = i["azimuth"]
             sunposition["elevation"] = i["elevation"]
             sunposition.append(sunposition)
-    except:
-        sunposition = []
+    except Error as e:
+        print(f"👎 Get sunposition from database failed. Error: {e}")
     return sunposition
 
 def post_panelposition(val1,val2):
@@ -189,8 +208,9 @@ def post_panelposition(val1,val2):
         conn = connect_to_db()
         conn.row_factory = sqlite3.Row
         cur = conn.cursor()
-        sql_query = "INSERT INTO solarpanel (val1,val2) VALUES (?,?)"
-        cur.execute(sql_query,panelposition)
+        sql = "INSERT INTO solarpanel (val1,val2) VALUES (?,?)"
+        args = panelposition
+        cur.execute(sql,args)
         conn.commit()
     except Error as e:
         print(f"👎 Insert into database failed. Error: {e}")

@@ -25,9 +25,9 @@ def create_message(key:str, decive:str, data:dict):
         }
     }
     message["Data"].update(data)
-    if (key[1] == '1'):#1:Request
+    if (key[-3] == '1'):#1:Request
         message["RequestData"] = message.pop("Data")
-    if (key[1] == '2'):#2:Respone   
+    if (key[-3] == '2'):#2:Respone   
         message["ResponseData"] = message.pop("Data")
     return message
 
@@ -48,14 +48,12 @@ def about():
 
 @app.route('/api/requestrecipe/', methods = ['POST'])
 def api_requestrecipe():
-    #receive data from client
     api_data = request.get_json() 
-    Device = api_data['Device']
-    
-    #message back
+    device = api_data['Header']['Device']
+    recipe = get_recipe_by_device_id(device)
     key = "0120"
     device = hostIP
-    #data = functionxY
+    data = recipe
     message = create_message(key,device,data)
     return jsonify(message)
 
@@ -93,13 +91,10 @@ def api_get_sun_position():
 
 @app.route('/api/post/solarpanel/position', methods=['POST'])
 def api_post_solarpanel_position():
-    #receive data from client
     api_data = request.get_json()
     value1 = api_data['RequestData']['Value1']
     value2 = api_data['RequestData']['Value2'] 
-    #post data into database
     post_panelposition(value1,value2)
-    #respone client
     key = "2220"
     device = hostIP
     data = {"Response": "Values saved to database"}

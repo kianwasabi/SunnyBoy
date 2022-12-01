@@ -1,10 +1,10 @@
 INSERT INTO device VALUES 
-(1,'SolarPanelDriver','4b8f1ddd0540ebd49a6b0ca7927e3534',1)--,
-(2,'SolarPanelDriver','4b8f1ddd0540ebd49a6b0ca7927e3534',)
+(1,'Solar Panel Driver','4b8f1ddd0540ebd49a6b0ca7927e3534',1),
+(2,'Wind Turbine Driver','4b8f1ddd0540ebd49a6b0ca7927e3534',2)
 ;
 INSERT INTO recipe VALUES
-(1,'Adjust Solar Panel')--, 
---(2,'WindTurbineDriver' ,'xxx',2)
+(1,'Adjust Solar Panel'), 
+(2,'Adjust Wind Turbine')
 ;
 INSERT INTO step VALUES
 (0120,'POST','/api/requestrecipe/'),
@@ -18,7 +18,7 @@ VALUES
 (1,0120),
 (1,1120),
 (1,2110),
-(1,2220)--,
---(2,0120),
---(2,1120),
+(1,2220),
+(2,0120),
+(2,1120)
 ;
