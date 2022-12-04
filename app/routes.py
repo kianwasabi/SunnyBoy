@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask,make_response , request, jsonify, render_template
 from flask_cors import CORS
 from datetime import datetime
 from database.models import *
@@ -7,29 +7,40 @@ import socket
 hostname = socket.gethostname()
 hostIP = socket.gethostbyname(hostname)
 
-def create_message(key:str, decive:str, data:dict):
+def message_in_Terminal(message):
+    print("⬇️-----------msg-start-----------⬇️")
+    print(message.headers)
+    print(message.get_json())
+    print("⬆️------------msg-end------------⬆️")
+
+def api_response(key:str, hostIP:str, res_data:dict):
     '''
-    Template function that creates the REST APIs Response/Request Message.
-    Parameter:
-    key (str) -> Process Key
-    decive (str) -> Client/Server ID
-    data (dict) -> Payload
+    Creates the REST APIs response message.
+    :param key: (str) Process Key
+    :param decive: (str) Server IP
+    :param data: (dict) Payload
+    :return: (*args: Any) -> Response 
     '''
-    message = {
-        "Header": {
-            "Key": key, 
-            "Device": decive,
-            "TimeStamp": datetime.now()
-        },
-        "Data": {
-        }
-    }
-    message["Data"].update(data)
-    if (key[-3] == '1'):#1:Request
-        message["RequestData"] = message.pop("Data")
-    if (key[-3] == '2'):#2:Respone   
-        message["ResponseData"] = message.pop("Data")
-    return message
+    response = make_response(jsonify(res_data))
+    response.headers.add("Key",key)
+    response.headers.add("Device",hostIP)
+    message_in_Terminal(response)
+    return response
+
+def api_request():
+    '''
+    Handels the REST APIs request message.
+    :param key: none
+    :return req_data: (dict) payload in JSON object
+    :return device: (str) Device IP 
+    :return key: (str) Process Key
+    '''
+    req_data = request.get_json()
+    #device = request.headers["Host"]
+    device = 1 #Übergangslösung -> IN DB ändern! 
+    key = request.headers["Key"]
+    message_in_Terminal(request)
+    return req_data, device, key
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -46,58 +57,96 @@ def api():
 def about():
     return render_template("about.html")
 
-@app.route('/api/requestrecipe/', methods = ['POST'])
+@app.route('/api/post/requestrecipe/', methods = ['POST'])
 def api_requestrecipe():
-    api_data = request.get_json() 
-    device = api_data['Header']['Device']
+    # http request
+    req_data, device, key = api_request()
+    # server operation
     recipe = get_recipe_by_device_id(device)
-    key = "0120"
-    device = hostIP
-    data = recipe
-    message = create_message(key,device,data)
-    return jsonify(message)
+    # http response 
+    res_data = {
+        "Response_Data":recipe
+    }
+    response = api_response(key,hostIP,res_data)
+    return response
 
 @app.route('/api/post/weatherinformation/refresh', methods=['POST'])
 def api_post_weatherinformation_refresh():
-    #if request.method == 'POST':
-    refresh_weatherinformation()
-    key = "1120"
-    device = hostIP
-    data = {
-        "Response": f"Weatherinformation refreshed at {datetime.now()}."
+    # http request
+    req_data, device, key = api_request()
+    # server operation
+    _, time_refreshed = refresh_weatherinformation()
+    # http response 
+    res_data = {
+        "Response_Data": 
+            {"Status": f"Weatherinformation refreshed at {time_refreshed}."}
     }
-    response_message = create_message(key,device,data)
-    return jsonify(response_message) 
+    response = api_response(key,hostIP,res_data)
+    return response
 
 @app.route('/api/get/weatherinformation/all', methods=['GET'])
 def api_get_weatherinformation_all():
-    key = "1110"
-    device = hostIP
-    data = get_current_weatherinformation()
-    message = create_message(key,device,data)
-    return jsonify(message)
+    # http request
+    req_data, device, key = api_request()
+    # server operation 
+    current_weather = get_current_weatherinformation()
+    # http response 
+    res_data = {
+        "Response_Data": current_weather
+    }
+    response = api_response(key,hostIP,res_data)
+    return response
 
 @app.route('/api/get/sun/position', methods=['GET'])
 def api_get_sun_position():
+    # http request
+    req_data, device, key = api_request()
+    # server operation 
     sunposition = get_current_sunposition()
-    key = "2110" 
-    device = hostIP
-    data = {
-        "Azimuth": sunposition[0],
-        "Elevation": sunposition[1]
+    # http response 
+    res_data = {
+        "Response_Data": sunposition
     }
-    message = create_message(key,device,data)
-    return jsonify(message)
+    response = api_response(key,hostIP,res_data)
+    return response
 
 @app.route('/api/post/solarpanel/position', methods=['POST'])
 def api_post_solarpanel_position():
-    api_data = request.get_json()
-    value1 = api_data['RequestData']['Value1']
-    value2 = api_data['RequestData']['Value2'] 
-    post_panelposition(value1,value2)
-    key = "2220"
-    device = hostIP
-    data = {"Response": "Values saved to database"}
-    message = create_message(key,device,data)
-    return jsonify(message)
+    # http request
+    req_data, device, key = api_request()
+    value1 = req_data['Request_Data']['Value1']
+    value2 = req_data['Request_Data']['Value2'] 
+    # server operation - 
+    _, time_saved = post_panelposition(value1,value2)
+    # http response 
+    res_data = {
+        "Response_Data": 
+        {
+            "Status": f"Values saved to database: {time_saved}"
+        }
+    }
+    response = api_response(key,hostIP,res_data)
+    return response
 
+# def create_message(key:str, decive:str, data:dict):
+#     '''
+#     Template function that creates the REST APIs Response/Request Message.
+#     :param key: (str) Process Key
+#     :param decive: (str) Client/Server ID
+#     param data: (dict) Payload
+#     '''
+#     message = {
+#         "Header": {
+#             "Key": key, 
+#             "Device": decive,
+#             "TimeStamp": datetime.now()
+#         },
+#         "Data": {
+#         }
+#     }
+#     message["Data"].update(data)
+#     if (key[-3] == '1'):#1:Request X1XX
+#         message["RequestData"] = message.pop("Data")
+#     if (key[-3] == '2'):#2:Respone X2XX
+#         message["ResponseData"] = message.pop("Data")
+#     return message

@@ -15,6 +15,8 @@ def connect_to_db():
 def drop_db_table():  
     '''
     Drops all tables in database. 
+    :param:
+    :return:
     '''
     try: 
         conn = connect_to_db()
@@ -63,34 +65,50 @@ def create_db_table(filename_schema:str, filename_recipescript:str):
 def get_recipe_by_device_id(device_id):
     ''' 
     get device recipe from database
-    :param filename_schema: filename of schema
-    :param filename_recipescript: filename of recipe script
+    :param device_id: device id from request
+    :return: recipe list
     '''
-    recipe_list = []
-    #try:
-    conn = connect_to_db()
-    conn.row_factory = sqlite3.Row
-    sql = "SELECT step.http_typ,step.step FROM step WHERE step.step_id IN (SELECT recipe_step.fk_step FROM recipe_step WHERE recipe_step.fk_recipe = (SELECT device.fk_recipe_to_device FROM device WHERE device.device_id = ?))"
-    args = (device_id,)
-    cur = conn.cursor()
-    cur = conn.execute(sql,args)
-    rows = cur.fetchall()
-    for i in rows:
-        tuple_in_recipe_list = {}
-        tuple_in_recipe_list["http_typ"] = i["http_typ"]
-        tuple_in_recipe_list["step"] = i["step"]
-        recipe_list.append(tuple_in_recipe_list)
-    #except Error as e:
-        #print(f"👎 Fetch Recipe failed. Error: {e}")
-    #finally:
-    conn.close()
-    return recipe_list
+    recipe = {}
+    http_typ = {}
+    step = {}
+    try:
+        conn = connect_to_db()
+        #conn.row_factory = sqlite3.Row
+        sql = "SELECT step.http_typ,step.step           \
+                FROM step                               \
+                WHERE step.step_id IN                   \
+                (SELECT recipe_step.fk_step             \
+                FROM recipe_step                        \
+                WHERE recipe_step.fk_recipe =           \
+                    (SELECT device.fk_recipe_to_device  \
+                    FROM device                         \
+                    WHERE device.device_id = ?))"
+        args = (device_id,)
+        cur = conn.cursor()
+        cur = conn.execute(sql,args)
+        rows = cur.fetchall()
+        for i, item in enumerate(rows):
+            #element_http_typ = {f"{i}":item["http_typ"]}
+            element_http_typ = {f"{i}":item[0]}
+            http_typ.update(element_http_typ)
+            #element_step = {f"{i}":item["step"]}
+            element_step = {f"{i}":item[1]}
+            step.update(element_step)
+    except Error as e:
+        print(f"👎 Fetch Recipe failed. Error: {e}")
+    finally:
+        conn.close()
+        recipe["http_typ"] = http_typ
+        recipe["step"] = step
+    return recipe
 
 def refresh_weatherinformation(): 
     '''
-        Uses weatherinfo package to insert current weather data to database
+        Insert current weather data to database by using weatherinfo package. 
+        :param: none
+        :return: inserted weatherinformation & timestamp 
     '''
-    #inserted_weatherinformation = {}
+    inserted_weatherinformation = {}
     weather, wind, sun = modulWeatherInfo()
     weatherinformation = {
     'locationname' : weather.getLocationName(),
@@ -112,58 +130,77 @@ def refresh_weatherinformation():
     try:
         conn = connect_to_db()
         cur = conn.cursor()
-        sql = "INSERT INTO weatherinformation (locationname, longitude, latitude, location_time, timezone, azimuth, elevation, sunrise, sunset, wind_speed, wind_direction, temperatur, cloudiness, weather_description, visibility) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
-        args = (weatherinformation['locationname'], weatherinformation['longitude'], weatherinformation['latitude'], weatherinformation['location_time'], weatherinformation['timezone'], weatherinformation['azimuth'], weatherinformation['elevation'], weatherinformation['sunrise'], weatherinformation['sunset'], weatherinformation['wind_speed'],  weatherinformation['wind_direction'], weatherinformation['temperatur'], weatherinformation['cloudiness'], weatherinformation['weather_description'],weatherinformation['visibility'])
+        sql = "INSERT INTO weatherinformation           \
+                (locationname, longitude, latitude,     \
+                location_time, timezone, azimuth,       \
+                elevation, sunrise, sunset,             \
+                wind_speed, wind_direction, temperatur, \
+                cloudiness, weather_description,        \
+                visibility)                             \
+                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+        args = (weatherinformation['locationname'],     
+                weatherinformation['longitude'],        
+                weatherinformation['latitude'],          
+                weatherinformation['location_time'],     
+                weatherinformation['timezone'],  
+                weatherinformation['azimuth'], 
+                weatherinformation['elevation'],  
+                weatherinformation['sunrise'],  
+                weatherinformation['sunset'],  
+                weatherinformation['wind_speed'],   
+                weatherinformation['wind_direction'],  
+                weatherinformation['temperatur'], 
+                weatherinformation['cloudiness'],  
+                weatherinformation['weather_description'],  
+                weatherinformation['visibility'])
         cur.execute(sql,args)
         conn.commit()
         inserted_weatherinformation = get_weatherinformation_by_id(cur.lastrowid)
-        #print(f"⏏︎ {cur.rowcount} record inserted. {inserted_weatherinformation}")
         print(f"⏏︎ {cur.rowcount} weather record inserted into database.")
     except Error as e:
         print(f"👎 Insert into database failed. Error: {e}")
     finally:
         conn.close()
-    return inserted_weatherinformation
+    return inserted_weatherinformation, datetime.now()
 
 def get_current_weatherinformation():
     weatherinformation = {}
     try:
-        conn = connect_to_db()
-        conn.row_factory = sqlite3.Row
-        cur = conn.cursor()
-        weatherinformation = get_weatherinformation_by_id(cur.lastrowid)
-        print(cur.lastrowid)
+        weatherinformation = get_weatherinformation_by_id("MAX")
     except Error as e:  
-        print(f"👎 Get weatherinfos from database failed. Error: {e}")
-    finally:
-        conn.close()
+        print(f"👎 Getting weatherinformations from database failed. Error: {e}")
     return weatherinformation
 
 def get_weatherinformation_by_id(weatherinformation_id):
     weatherinformation = {}
     try:
         conn = connect_to_db()
-        conn.row_factory = sqlite3.Row
         cur = conn.cursor()
-        cur.execute("SELECT * FROM weatherinformation WHERE weather_id = ?", (weatherinformation_id,))
+        if weatherinformation_id ==  "MAX":
+            sql = "SELECT * FROM weatherinformation WHERE weather_id = (SELECT MAX(weather_id) FROM weatherinformation);"
+            cur.execute(sql) 
+        else:
+            sql = "SELECT * FROM weatherinformation WHERE weather_id = ?;"
+            args = (weatherinformation_id,)
+            cur.execute(sql,args)
         row = cur.fetchone()
         # convert row object to dictionary
-        weatherinformation['weather_id'] = row['weather_id']
-        weatherinformation['locationname'] = row['locationname']
-        weatherinformation['longitude'] = row['longitude'] 
-        weatherinformation['latitude'] = row['latitude']
-        weatherinformation['location_time'] = row['location_time']
-        weatherinformation['timezone'] = row['timezone']
-        weatherinformation['azimuth'] = row['azimuth']
-        weatherinformation['elevation'] = row['elevation']
-        weatherinformation['sunrise'] = row['sunrise']
-        weatherinformation['sunset'] = row['sunset']
-        weatherinformation['wind_speed'] = row['wind_speed'] 
-        weatherinformation['wind_direction'] = row['wind_direction']
-        weatherinformation['temperatur'] = row['temperatur']
-        weatherinformation['cloudiness'] = row['cloudiness']
-        weatherinformation['weather_description'] = row ['weather_description'] 
-        weatherinformation['visibility'] = row ['visibility']
+        weatherinformation['weather_id']            = row[0]
+        weatherinformation['locationname']          = row[1]
+        weatherinformation['longitude']             = row[2] 
+        weatherinformation['latitude']              = row[3]
+        weatherinformation['location_time']         = row[4]
+        weatherinformation['timezone']              = row[5]
+        weatherinformation['azimuth']               = row[6]
+        weatherinformation['elevation']             = row[7]
+        weatherinformation['sunrise']               = row[8]
+        weatherinformation['sunset']                = row[9]
+        weatherinformation['wind_speed']            = row[10] 
+        weatherinformation['wind_direction']        = row[11]
+        weatherinformation['temperatur']            = row[12]
+        weatherinformation['cloudiness']            = row[13]
+        weatherinformation['weather_description']   = row [14] 
+        weatherinformation['visibility']            = row [15]
     except:
         weatherinformation = {}
     finally:
@@ -171,166 +208,46 @@ def get_weatherinformation_by_id(weatherinformation_id):
     return weatherinformation
 
 def get_current_sunposition():
-    #sunposition = []
     sunposition = {}
     try:
-        conn = connect_to_db()
-        conn.row_factory = sqlite3.Row
-        cur = conn.cursor()
-        sunposition = get_sunposition_by_id(cur.lastrowid)
+        sunposition = get_sunposition_by_id("MAX")
     except Error as e:  
-        print(f"👎 Get from database failed. Error: {e}")
-    finally:
-        conn.close()
+        print(f"👎 Get current sunposition from database failed. Error: {e}")
     return sunposition
 
-def get_sunposition_by_id():
-    #sunposition = []
+def get_sunposition_by_id(sunposition_id):
     sunposition = {}
     try:
         conn = connect_to_db()
-        conn.row_factory = sqlite3.Row
         cur = conn.cursor()
-        cur.execute("SELECT azimuth, elevation FROM weatherinformation")
-        rows = cur.fetchall()
-        for i in rows:
-            #sunposition = {}
-            sunposition["azimuth"] = i["azimuth"]
-            sunposition["elevation"] = i["elevation"]
-            sunposition.append(sunposition)
+        if sunposition_id == "MAX": 
+            sql = "SELECT azimuth,elevation FROM weatherinformation WHERE weather_id = \
+                    (SELECT MAX(weather_id) FROM weatherinformation);"
+            cur.execute(sql)
+        else: 
+            sql = "SELECT azimuth, elevation FROM weatherinformation WHERE weather_id = ?"
+            args = (sunposition_id,)
+            cur.execute(sql,args)
+        row = cur.fetchone()
+        #row to dict
+        sunposition['azimuth'] = row[0]
+        sunposition['elevation'] = row[1]
     except Error as e:
-        print(f"👎 Get sunposition from database failed. Error: {e}")
+        print(f"👎 Get sunposition by id from database failed. Error: {e}")
     return sunposition
 
 def post_panelposition(val1,val2):
-    panelposition = [val1, val2]
+    panelposition = (val1, val2)
     try:
         conn = connect_to_db()
-        conn.row_factory = sqlite3.Row
+        #conn.row_factory = sqlite3.Row
         cur = conn.cursor()
-        sql = "INSERT INTO solarpanel (val1,val2) VALUES (?,?)"
+        sql = "INSERT INTO solarpanel (value1,value2) VALUES (?,?)"
         args = panelposition
         cur.execute(sql,args)
         conn.commit()
     except Error as e:
         print(f"👎 Insert into database failed. Error: {e}")
-    return panelposition
-
-
-# def get_sunposition():
-#     sunposition = []
-#     try:
-#         conn = connect_to_db()
-#         conn.row_factory = sqlite3.Row
-#         cur = conn.cursor()
-#         cur.execute("SELECT azimuth, elevation FROM weatherinformation")
-#         rows = cur.fetchall()
-#         for i in rows:
-#             sunposition = {}
-#             sunposition["azimuth"] = i["azimuth"]
-#             sunposition["elevation"] = i["elevation"]
-#             sunposition.append(sunposition)
-#     except:
-#         sunposition = []
-#     return sunposition
-
-# def insert_sunposition(suninfo):
-#     inserted_sunposition = {}
-#     try:
-#         conn = connect_to_db()
-#         cur = conn.cursor()
-#         sql = "INSERT INTO sunpositions (sazimuth, selevation, ssunrise, ssunset) VALUES (?,?,?,?)"
-#         val = (suninfo['azimuth'], suninfo['elevation'], suninfo['sunrise'], suninfo['sunset'])
-#         cur.execute(sql,val)
-#         conn.commit()
-#         inserted_sunposition = get_sunposition_by_sid(cur.lastrowid)
-#         print("⏏︎ ",cur.rowcount, "record inserted.","/",inserted_sunposition)
-#     except Error as e:
-#         print("🥲 insert into database failed.")
-#         print(e)
-#         #conn.rollback()
-#     finally:
-#         conn.close()
-
-#     return inserted_sunposition
-
-
-# def get_sunpositions():
-#     sunpositions = []
-#     try:
-#         conn = connect_to_db()
-#         conn.row_factory = sqlite3.Row
-#         cur = conn.cursor()
-#         cur.execute("SELECT * FROM sunpositions")
-#         rows = cur.fetchall()
-
-#         # convert row objects to dictionary
-#         for i in rows:
-#             sunposition = {}
-#             sunposition["sid"] = i["sid"]
-#             sunposition["sazimuth"] = i["sazimuth"]
-#             sunposition["selevation"] = i["selevation"]
-#             sunposition["ssunrise"] = i["ssunrise"]
-#             sunposition["ssunset"] = i["ssunset"]
-#             sunpositions.append(sunposition)
-
-#     except:
-#         sunpositions = []
-
-#     return sunpositions
-
-
-# def get_sunposition_by_sid(sunposition_sid):
-#     sunposition = {}
-#     try:
-#         conn = connect_to_db()
-#         conn.row_factory = sqlite3.Row
-#         cur = conn.cursor()
-#         cur.execute("SELECT * FROM sunpositions WHERE sid = ?", (sunposition_sid,))
-#         row = cur.fetchone()
-
-#         # convert row object to dictionary
-#         sunposition["sid"] = row["sid"]
-#         sunposition["sazimuth"] = row["sazimuth"]
-#         sunposition["selevation"] = row["selevation"]
-#         sunposition["ssunrise"] = row["ssunrise"]
-#         sunposition["ssunset"] = row["ssunset"]
-#     except:
-#         sunposition = {}
-
-#     return sunposition
-
-
-# def update_sunposition(sunposition):
-#     updated_sunposition = {}
-#     try:
-#         conn = connect_to_db()
-#         cur = conn.cursor()
-#         cur.execute("UPDATE sunpositions SET sazimuth = ?, selevation = ?, ssunrise = ?, ssunset = ? WHERE sid =?", (sunposition["sazimuth"], sunposition["selevation"], sunposition["ssunrise"], sunposition["ssunset"], sunposition["sid"]))
-#         conn.commit()
-#         #return the sunposition
-#         updated_sunposition = get_sunposition_by_sid(sunposition["sid"])
-
-#     except:
-#         conn.rollback()
-#         updated_sunposition = {}
-#     finally:
-#         conn.close()
-
-#     return updated_sunposition
-
-
-# def delete_sunposition(sunposition_sid):
-#     message = {}
-#     try:
-#         conn = connect_to_db()
-#         conn.execute("DELETE from updated_sunpositions WHERE sid = ?", (sunposition_sid))
-#         conn.commit()
-#         message["status"] = "Sun Position deleted successfully"
-#     except:
-#         conn.rollback()
-#         message["status"] = "Cannot delete Sun Position"
-#     finally:
-#         conn.close()
-
-#     return message
+    finally:
+        conn.close()
+    return panelposition, datetime.now()

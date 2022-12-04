@@ -7,9 +7,9 @@ INSERT INTO recipe VALUES
 (2,'Adjust Wind Turbine')
 ;
 INSERT INTO step VALUES
-(0120,'POST','/api/requestrecipe/'),
+(0120,'POST','/api/post/requestrecipe/'),
 (1110,'GET','/api/get/weatherinformation/all'), 
-(1120,'GET','/api/get/weatherinformation/refresh'), 
+(1120,'POST','/api/post/weatherinformation/refresh'), 
 (2110,'GET','/api/get/sun/position'), 
 (2220,'POST','/api/post/solarpanel/position')
 ;
