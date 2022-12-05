@@ -5,18 +5,24 @@ import os
 from weatherinfo.modul_weather_Information import *
 
 def connect_to_db():
+    '''
+    Connect to database. 
+    :param: none
+    :return: none
+    '''
     conn = None
+    filename_database = "database.db"
     try:
-        conn = sqlite3.connect(f"{os.path.dirname(os.path.abspath(__file__))}/database.db")
+        conn = sqlite3.connect(f"{os.path.dirname(os.path.abspath(__file__))}/{filename_database}")
     except Error as e:
-        print(f"👎 Connection to DB failed. Error: {e}")
+        print(f"👎 Connection to {filename_database} failed. Error: {e}")
     return conn
 
 def drop_db_table():  
     '''
     Drops all tables in database. 
-    :param:
-    :return:
+    :param: none
+    :return: none
     '''
     try: 
         conn = connect_to_db()
@@ -37,8 +43,8 @@ def drop_db_table():
 def create_db_table(filename_schema:str, filename_recipescript:str):
     ''' 
     create database and insert device recipes
-    :param filename_schema: filename of schema
-    :param filename_recipescript: filename of recipe script
+    :param filename_schema: (str) filename of schema
+    :param filename_recipescript: (str) filename of recipe script
     '''
     try:
         conn = connect_to_db()
@@ -104,9 +110,9 @@ def get_recipe_by_device_id(device_id):
 
 def refresh_weatherinformation(): 
     '''
-        Insert current weather data to database by using weatherinfo package. 
-        :param: none
-        :return: inserted weatherinformation & timestamp 
+    Insert current weather data to database by using weatherinfo package. 
+    :param: none
+    :return: inserted weatherinformation & timestamp 
     '''
     inserted_weatherinformation = {}
     weather, wind, sun = modulWeatherInfo()
@@ -164,6 +170,11 @@ def refresh_weatherinformation():
     return inserted_weatherinformation, datetime.now()
 
 def get_current_weatherinformation():
+    '''
+    Returns the most recent weatherinformation from the database.
+    :param: none
+    :return weatherinformation : current weatherinformation
+    '''
     weatherinformation = {}
     try:
         weatherinformation = get_weatherinformation_by_id("MAX")
@@ -172,6 +183,11 @@ def get_current_weatherinformation():
     return weatherinformation
 
 def get_weatherinformation_by_id(weatherinformation_id):
+    '''
+    Returns weatherinformation by id from database.
+    :param weatherinformation_id: (int) id in database
+    :return weatherinformation: weatherinformation by id
+    '''
     weatherinformation = {}
     try:
         conn = connect_to_db()
@@ -208,6 +224,11 @@ def get_weatherinformation_by_id(weatherinformation_id):
     return weatherinformation
 
 def get_current_sunposition():
+    '''
+    Returns the most recent sunposition from the weatherinformation table.
+    :param: none
+    :return weatherinformation : current weatherinformation
+    '''
     sunposition = {}
     try:
         sunposition = get_sunposition_by_id("MAX")
@@ -216,6 +237,11 @@ def get_current_sunposition():
     return sunposition
 
 def get_sunposition_by_id(sunposition_id):
+    '''
+    Returns sunposition by id from database.
+    :param sunposition_id: (int) id in database
+    :return sunposition: sunposition by id
+    '''
     sunposition = {}
     try:
         conn = connect_to_db()
@@ -237,6 +263,13 @@ def get_sunposition_by_id(sunposition_id):
     return sunposition
 
 def post_panelposition(val1,val2):
+    '''
+    Saves the received adjustments to the solar panel to the database.
+    :param val1: Value 1
+    :param val2: Value 2
+    :return panelposition : adjusted panelposition
+    :return datetime.now(): Timestamp
+    '''
     panelposition = (val1, val2)
     try:
         conn = connect_to_db()

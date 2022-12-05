@@ -3,9 +3,11 @@ from flask_cors import CORS
 from datetime import datetime
 from database.models import *
 import socket
+from uuid import getnode as get_mac
 
 hostname = socket.gethostname()
 hostIP = socket.gethostbyname(hostname)
+mac = get_mac()
 
 def message_in_Terminal(message):
     print("⬇️-----------msg-start-----------⬇️")
