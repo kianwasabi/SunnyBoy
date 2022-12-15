@@ -75,37 +75,78 @@ def get_recipe_by_device_id(device_id):
     :return: recipe list
     '''
     recipe = {}
-    http_typ = {}
-    step = {}
+    method = {}
+    route = {}
+    key = {}
+    reqkeys = {} #keys in dict for request message
+    reskeys = {} #keys in dict for response message
     try:
         conn = connect_to_db()
-        #conn.row_factory = sqlite3.Row
-        sql = "SELECT step.http_typ,step.step           \
-                FROM step                               \
-                WHERE step.step_id IN                   \
-                (SELECT recipe_step.fk_step             \
-                FROM recipe_step                        \
-                WHERE recipe_step.fk_recipe =           \
-                    (SELECT device.fk_recipe_to_device  \
-                    FROM device                         \
-                    WHERE device.device_id = ?))"
+        sql_step =   "SELECT \
+                step.step_id, \
+                step.method, \
+                step.route       \
+                FROM step \
+                JOIN recipe_step \
+                ON recipe_step.fk_step = step.step_id\
+                JOIN recipe \
+                ON recipe.recipe_id = recipe_step.fk_recipe\
+                JOIN device \
+                ON recipe.recipe_id=device.fk_recipe_to_device\
+                WHERE device.device_id = ?"
         args = (device_id,)
+
+        sql_req =   "SELECT \
+                requestkey.keytitle\
+                FROM step_requestkey  \
+                JOIN requestkey  \
+                ON requestkey.requestkey_id=step_requestkey.fk_requestkey\
+                WHERE step_requestkey.fk_step = ?"         
+
+        sql_res = "SELECT \
+                responsekey.keytitle\
+                FROM step_responsekey\
+                JOIN responsekey\
+                ON responsekey.responsekey_id=step_responsekey.fk_responsekey\
+                WHERE step_responsekey.fk_step = ?"
+
         cur = conn.cursor()
-        cur = conn.execute(sql,args)
+        cur = conn.execute(sql_step,args)
         rows = cur.fetchall()
         for i, item in enumerate(rows):
-            #element_http_typ = {f"{i}":item["http_typ"]}
-            element_http_typ = {f"{i}":item[0]}
-            http_typ.update(element_http_typ)
-            #element_step = {f"{i}":item["step"]}
-            element_step = {f"{i}":item[1]}
-            step.update(element_step)
+            #step key
+            element_key = {f"{i}":item[0]}
+            key.update(element_key)
+            #step method
+            element_method = {f"{i}":item[1]}
+            method.update(element_method)
+            #step route
+            element_route = {f"{i}":item[2]}
+            route.update(element_route)
+        
+        for i, val in enumerate(key.values()):
+            #step req keys dict
+            cur = conn.execute(sql_req,(val,)) 
+            ele = cur.fetchall()
+            element_reqkey = {f"{i}":ele}
+            reqkeys.update(element_reqkey)
+            #step res keys dict
+            cur = conn.execute(sql_res,(val,)) 
+            ele = cur.fetchall()
+            element_reskey = {f"{i}":ele}
+            reskeys.update(element_reskey)
+
     except Error as e:
         print(f"👎 Fetch Recipe failed. Error: {e}")
     finally:
         conn.close()
-        recipe["http_typ"] = http_typ
-        recipe["step"] = step
+        recipe["domain"] = "domain=header['Device']"
+        recipe["method"] = method
+        recipe["route"]  = route
+        recipe["key"]  = key
+        recipe["request"] = reqkeys
+        recipe["response"] = reskeys
+        
     return recipe
 
 def refresh_weatherinformation(): 

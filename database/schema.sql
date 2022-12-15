@@ -1,12 +1,14 @@
-CREATE TABLE IF NOT EXISTS recipe(
-  recipe_id   INTEGER PRIMARY KEY, 
-  description TEXT NOT NULL
+CREATE TABLE IF NOT EXISTS device(
+  device_id           INTEGER PRIMARY KEY,    --MAC adress 
+  devicename          TEXT NOT NULL, 
+  apikey              TEXT NOT NULL,
+  fk_recipe_to_device INTEGER,
+  FOREIGN KEY(fk_recipe_to_device) REFERENCES recipe(recipe_id)
 );
 
-CREATE TABLE IF NOT EXISTS step(
-  step_id   INTEGER PRIMARY KEY, 
-  http_typ  TEXT NOT NULL,
-  step      TEXT NOT NULL
+CREATE TABLE IF NOT EXISTS recipe(
+  recipe_id   INTEGER PRIMARY KEY,  
+  description TEXT NOT NULL         
 );
 
 CREATE TABLE IF NOT EXISTS recipe_step(
@@ -17,12 +19,35 @@ CREATE TABLE IF NOT EXISTS recipe_step(
   --PRIMARY KEY (fk_recipe, fk_step)
 );
 
-CREATE TABLE IF NOT EXISTS device(
-  device_id           INTEGER PRIMARY KEY, 
-  devicename          TEXT NOT NULL, 
-  apikey              TEXT NOT NULL,
-  fk_recipe_to_device INTEGER,
-  FOREIGN KEY(fk_recipe_to_device) REFERENCES recipe(recipe_id)
+CREATE TABLE IF NOT EXISTS step(
+  step_id INTEGER PRIMARY KEY,       --Key in Header
+  --domain  TEXT NOT NULL,             --URL:Domain   --currently in response header
+  method  TEXT NOT NULL,             --URL:Method
+  route   TEXT NOT NULL              --URL:Resource Path
+);
+
+CREATE TABLE IF NOT EXISTS step_requestkey(
+  fk_step        INTEGER, 
+  fk_requestkey  INTEGER, 
+  FOREIGN KEY (fk_step)       REFERENCES step(step_id), 
+  FOREIGN KEY (fk_requestkey) REFERENCES requestkey(requestkey_id)
+);
+
+CREATE TABLE IF NOT EXISTS step_responsekey(
+  fk_step         INTEGER, 
+  fk_responsekey  INTEGER, 
+  FOREIGN KEY (fk_step)        REFERENCES step(step_id), 
+  FOREIGN KEY (fk_responsekey) REFERENCES responsekey(responsekey_id)
+);
+
+CREATE TABLE IF NOT EXISTS requestkey(
+  requestkey_id  INTEGER PRIMARY KEY,
+  keytitle       TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS responsekey(
+  responsekey_id  INTEGER PRIMARY KEY,
+  keytitle        TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS weatherinformation(

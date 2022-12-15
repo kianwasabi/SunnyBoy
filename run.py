@@ -5,11 +5,12 @@ import socket
 
 def main(): 
     drop_db_table()
-    create_db_table("schema.sql","query.sql")
+    create_db_table("schema.sql","query_device_recipe.sql")
     try: 
         hostname = socket.gethostname()
         hostIP = socket.gethostbyname(hostname)
         app.run(hostIP, port=8080, debug=True)
+        #app.run("0.0.0.0", port=8080, debug=True)
         print("🫡 Server started")
     except Error as e:
         print (f"Starting Server failed - Error: {e}")
