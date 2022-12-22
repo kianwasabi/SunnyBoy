@@ -3,11 +3,11 @@ from flask_cors import CORS
 from datetime import datetime
 from database.models import *
 import socket
-from uuid import getnode as get_mac
+#from uuid import getnode as get_mac
 
 hostname = socket.gethostname()
 hostIP = socket.gethostbyname(hostname)
-mac = get_mac()
+#mac = get_mac()
 
 def message_in_Terminal(message):
     print("⬇️-----------msg-start-----------⬇️")
@@ -129,26 +129,3 @@ def api_post_solarpanel_position():
     }
     response = api_response(key,hostIP,res_data)
     return response
-
-# def create_message(key:str, decive:str, data:dict):
-#     '''
-#     Template function that creates the REST APIs Response/Request Message.
-#     :param key: (str) Process Key
-#     :param decive: (str) Client/Server ID
-#     param data: (dict) Payload
-#     '''
-#     message = {
-#         "Header": {
-#             "Key": key, 
-#             "Device": decive,
-#             "TimeStamp": datetime.now()
-#         },
-#         "Data": {
-#         }
-#     }
-#     message["Data"].update(data)
-#     if (key[-3] == '1'):#1:Request X1XX
-#         message["RequestData"] = message.pop("Data")
-#     if (key[-3] == '2'):#2:Respone X2XX
-#         message["ResponseData"] = message.pop("Data")
-#     return message

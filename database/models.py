@@ -156,7 +156,9 @@ def refresh_weatherinformation():
     :return: inserted weatherinformation & timestamp 
     '''
     inserted_weatherinformation = {}
-    weather, wind, sun = modulWeatherInfo()
+    cityname = "Braunschweig"
+    user_api = "4b8f1ddd0540ebd49a6b0ca7927e3534"
+    weather, wind, sun = modulWeatherInfo(cityname,user_api)
     weatherinformation = {
     'locationname' : weather.getLocationName(),
     'longitude' : weather.getLongitude(), 

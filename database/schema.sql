@@ -67,9 +67,7 @@ CREATE TABLE IF NOT EXISTS weatherinformation(
   cloudiness          TEXT NOT NULL,
   weather_description TEXT NOT NULL, 
   visibility          TEXT NOT NULL, 
-  created             TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP--,
-  --fk_device_id INTEGER, 
-  --FOREIGN KEY (fk_device_id) REFERENCES device (device_id) 
+  created             TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS task(

@@ -2,6 +2,9 @@
 	"folders": [
 		{
 			"path": "."
+		},
+		{
+			"path": "../Weather_Information_Device"
 		}
 	],
 	"settings": {}

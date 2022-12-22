@@ -20,11 +20,15 @@ def printinTerminal(weather,wind,sun):
     print("Sun:","Position:","(",sun.getAzimuth(),";",sun.getElevation(),")","Sunrise:",sun.getTimeSunrise(),"Sunset:",sun.getTimeSunset())
     print("---------------------------------------------------------------")
 
-def modulWeatherInfo(): 
-    #Call API
-    #cityname = input("Enter city name: ")
-    cityname = "Braunschweig"
-    api_data = callOpenWeatherAPI(cityname)
+def modulWeatherInfo(cityname:str, user_api:str): 
+    '''
+    Generates weatherinformation for a given location.
+    :param cityname: (str) Name of the City
+    :param user_api: (str) API Key for openweathermaps.com
+    :return: (turpel) objects of class wind, weather and sun
+    '''
+    #Call openweahtermaps API
+    api_data = callOpenWeatherAPI(cityname,user_api)
     latitude = api_data['coord']['lat']
     longitude= api_data['coord']['lon']
     temperatur = ((api_data['main']['temp']) - 273.15) #°F to °C
@@ -48,6 +52,6 @@ def modulWeatherInfo():
     weather = Weather(temperatur,weather_description, cloudiness, visibility,cityname, longitude, latitude, time_in_tz, timezone)
     wind = Wind(wind_speed, wind_direction, cityname, longitude, latitude, time_in_tz,timezone)
     sun = Sun(timestamp_sunrise,timestamp_sunset, cityname, longitude, latitude, time_in_tz,timezone)
-    #print in terminal
+    #print weather, sun and wind in terminal
     #printinTerminal(weather,wind,sun)
     return weather,wind,sun

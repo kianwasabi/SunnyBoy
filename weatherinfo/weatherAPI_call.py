@@ -1,6 +1,6 @@
 import requests
 
-def callOpenWeatherAPI(city_name):
+def callOpenWeatherAPI(city_name:str , user_api:str):
     # def apiLogin (): 
     #     filename = 'OpenWeatherMap.txt'  
     #     try:
@@ -14,8 +14,8 @@ def callOpenWeatherAPI(city_name):
     #     else: 
     #         return user_api
     # user_api = apiLogin()
+    
 
-    user_api = "4b8f1ddd0540ebd49a6b0ca7927e3534"
     #Call OpenWeatherMap API 
     try: 
         complete_api_link = "https://api.openweathermap.org/data/2.5/weather?q="+city_name+"&appid="+user_api
