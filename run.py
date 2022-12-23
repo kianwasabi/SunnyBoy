@@ -4,7 +4,7 @@ from database.models import *
 import socket
 
 def main(): 
-    drop_db_table()
+    #drop_db_table()
     create_db_table("schema.sql","query_device_recipe.sql")
     try: 
         hostname = socket.gethostname()

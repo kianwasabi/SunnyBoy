@@ -26,6 +26,7 @@ def api_response(key:str, hostIP:str, res_data:dict):
     response = make_response(jsonify(res_data))
     response.headers.add("Key",key)
     response.headers.add("Device",hostIP)
+    response.headers.add("Port","8080")
     message_in_Terminal(response)
     return response
 
@@ -34,7 +35,7 @@ def api_request():
     Handels the REST APIs request message.
     :param key: none
     :return req_data: (dict) payload in JSON object
-    :return device: (str) Device IP 
+    :return device: (str) Device IP = device_id in DB
     :return key: (str) Process Key
     '''
     req_data = request.get_json()
@@ -76,8 +77,10 @@ def api_requestrecipe():
 def api_post_weatherinformation_refresh():
     # http request
     req_data, device, key = api_request()
+    #cityname = req_data["Location"]
+    cityname = "Tokyo"
     # server operation
-    _, time_refreshed = refresh_weatherinformation()
+    _, time_refreshed = refresh_weatherinformation(cityname,device)
     # http response 
     res_data = {
         "Response_Data": 

@@ -149,16 +149,33 @@ def get_recipe_by_device_id(device_id):
         
     return recipe
 
-def refresh_weatherinformation(): 
+def get_device_by_device_id(device_id):
+    '''
+    :return: 
+    '''
+    device = {}
+    sql="SELECT * FROM device WHERE device_id = ?;"
+    arg=(device_id,)
+    conn = connect_to_db()
+    cur = conn.cursor()
+    cur.execute(sql,arg)
+    row = cur.fetchone()
+    device["device_id"] = row[0]
+    device["device_name"] = row[1]
+    device["api_key"] = row[2]
+    return device
+
+def refresh_weatherinformation(cityname:str,device_id): 
     '''
     Insert current weather data to database by using weatherinfo package. 
     :param: none
     :return: inserted weatherinformation & timestamp 
     '''
     inserted_weatherinformation = {}
-    cityname = "Braunschweig"
-    user_api = "4b8f1ddd0540ebd49a6b0ca7927e3534"
-    weather, wind, sun = modulWeatherInfo(cityname,user_api)
+    device_info = get_device_by_device_id(device_id)
+    api_key = device_info["api_key"]
+    #api_key = "4b8f1ddd0540ebd49a6b0ca7927e3534"
+    weather, wind, sun = modulWeatherInfo(cityname,api_key)
     weatherinformation = {
     'locationname' : weather.getLocationName(),
     'longitude' : weather.getLongitude(), 
