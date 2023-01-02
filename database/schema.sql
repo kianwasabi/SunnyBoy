@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS device(
-  device_id           INTEGER PRIMARY KEY,    --MAC adress 
+  device_id           TEXT PRIMARY KEY,
   devicename          TEXT NOT NULL, 
   apikey              TEXT NOT NULL,
   fk_recipe_to_device INTEGER,

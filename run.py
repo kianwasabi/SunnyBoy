@@ -1,16 +1,12 @@
-#import packages 
 from app.routes import *
 from database.models import *
-import socket
+from config import *
 
 def main(): 
-    #drop_db_table()
+    drop_db_table()
     create_db_table("schema.sql","query_device_recipe.sql")
     try: 
-        hostname = socket.gethostname()
-        hostIP = socket.gethostbyname(hostname)
-        app.run(hostIP, port=8080, debug=True)
-        #app.run("0.0.0.0", port=8080, debug=True)
+        app.run(hostIP, port, debug=True)
         print("🫡 Server started")
     except Error as e:
         print (f"Starting Server failed - Error: {e}")

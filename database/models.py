@@ -4,6 +4,7 @@ from sqlite3 import Error
 import os
 from weatherinfo.modul_weather_Information import *
 
+# ------ Database Managment ------
 def connect_to_db():
     '''
     Connect to database. 
@@ -68,6 +69,7 @@ def create_db_table(filename_schema:str, filename_recipescript:str):
     except Error as e:
         print(f"👎 Saving Recipe failed. Error:{e}")        
 
+# ------ Business Functions ------ 
 def get_recipe_by_device_id(device_id):
     ''' 
     get device recipe from database
@@ -135,7 +137,6 @@ def get_recipe_by_device_id(device_id):
             ele = cur.fetchall()
             element_reskey = {f"{i}":ele}
             reskeys.update(element_reskey)
-
     except Error as e:
         print(f"👎 Fetch Recipe failed. Error: {e}")
     finally:
@@ -146,7 +147,7 @@ def get_recipe_by_device_id(device_id):
         recipe["key"]  = key
         recipe["request"] = reqkeys
         recipe["response"] = reskeys
-        
+    print("Server: get_recipe_by_device_id executed.")
     return recipe
 
 def get_device_by_device_id(device_id):
@@ -154,18 +155,24 @@ def get_device_by_device_id(device_id):
     :return: 
     '''
     device = {}
-    sql="SELECT * FROM device WHERE device_id = ?;"
-    arg=(device_id,)
-    conn = connect_to_db()
-    cur = conn.cursor()
-    cur.execute(sql,arg)
-    row = cur.fetchone()
-    device["device_id"] = row[0]
-    device["device_name"] = row[1]
-    device["api_key"] = row[2]
+    try: 
+        sql="SELECT * FROM device WHERE device_id = ?;"
+        arg=(device_id,)
+        conn = connect_to_db()
+        cur = conn.cursor()
+        cur.execute(sql,arg)
+        row = cur.fetchone()
+        device["device_id"] = row[0]
+        device["device_name"] = row[1]
+        device["api_key"] = row[2]
+    except Error as e:
+        print(f"👎 Insert into database failed. Error: {e}")
+    finally:
+        conn.close()
+    print("Server: get_device_by_device_id executed.")
     return device
 
-def refresh_weatherinformation(cityname:str,device_id): 
+def refresh_weatherinformation(cityname:str,device_id:str): 
     '''
     Insert current weather data to database by using weatherinfo package. 
     :param: none
@@ -174,7 +181,6 @@ def refresh_weatherinformation(cityname:str,device_id):
     inserted_weatherinformation = {}
     device_info = get_device_by_device_id(device_id)
     api_key = device_info["api_key"]
-    #api_key = "4b8f1ddd0540ebd49a6b0ca7927e3534"
     weather, wind, sun = modulWeatherInfo(cityname,api_key)
     weatherinformation = {
     'locationname' : weather.getLocationName(),
@@ -227,6 +233,7 @@ def refresh_weatherinformation(cityname:str,device_id):
         print(f"👎 Insert into database failed. Error: {e}")
     finally:
         conn.close()
+    print("Server: refresh_weatherinformation executed.")
     return inserted_weatherinformation, datetime.now()
 
 def get_current_weatherinformation():
@@ -240,6 +247,7 @@ def get_current_weatherinformation():
         weatherinformation = get_weatherinformation_by_id("MAX")
     except Error as e:  
         print(f"👎 Getting weatherinformations from database failed. Error: {e}")
+    print("Server: get_current_weatherinformation executed.")   
     return weatherinformation
 
 def get_weatherinformation_by_id(weatherinformation_id):
@@ -277,10 +285,11 @@ def get_weatherinformation_by_id(weatherinformation_id):
         weatherinformation['cloudiness']            = row[13]
         weatherinformation['weather_description']   = row [14] 
         weatherinformation['visibility']            = row [15]
-    except:
-        weatherinformation = {}
+    except Error as e: 
+        print(f"👎 Get weatherinformation by id from database failed. Error: {e}")
     finally:
         conn.close()
+    print("Server: get_weatherinformation_by_id executed.")     
     return weatherinformation
 
 def get_current_sunposition():
@@ -294,6 +303,7 @@ def get_current_sunposition():
         sunposition = get_sunposition_by_id("MAX")
     except Error as e:  
         print(f"👎 Get current sunposition from database failed. Error: {e}")
+    print("Server: get_current_sunposition executed.") 
     return sunposition
 
 def get_sunposition_by_id(sunposition_id):
@@ -320,6 +330,7 @@ def get_sunposition_by_id(sunposition_id):
         sunposition['elevation'] = row[1]
     except Error as e:
         print(f"👎 Get sunposition by id from database failed. Error: {e}")
+    print("Server: get_sunposition_by_id executed.") 
     return sunposition
 
 def post_panelposition(val1,val2):
@@ -343,4 +354,5 @@ def post_panelposition(val1,val2):
         print(f"👎 Insert into database failed. Error: {e}")
     finally:
         conn.close()
+    print("Server: post_panelposition executed.")    
     return panelposition, datetime.now()
