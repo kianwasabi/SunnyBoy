@@ -1,4 +1,6 @@
-from flask import Flask,make_response , request, jsonify, render_template
+from flask import Flask,  make_response , request, jsonify, render_template, UserForm
+from flask_wtf import FlaskForm
+from wtforms import StringField, TextField, SubmitFiled
 from flask_cors import CORS
 from datetime import datetime
 from database.models import *
@@ -6,6 +8,10 @@ from config import *
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
+
+# ------ forms ------
+class UserForm(FlaskForm):
+    device_id = StringField("Device IP")
 
 # ------ web interface routes ------
 
@@ -17,6 +23,13 @@ def home():
 def api():
     return render_template("api.html")
 
+@app.route('/processcontrol', methods=["POST","GET"])
+def processcontrol():
+    if request.methods == "POST":
+        return render_template("processcontrol.html")    
+    else:
+        return render_template("processcontrol.html")   
+        
 @app.route('/about')
 def about():
     return render_template("about.html")
