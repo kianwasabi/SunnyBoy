@@ -1,9 +1,22 @@
 {% extends "layout.html" %}
 {% block content %}
-    
 <div class="home">
-    <h1>Home</h1>
-    <p>Text Home-Page</p>
+    <h1>Weather Information</h1>
+    <input type="text" placeholder="Location"/>
+    <button>Update</button>
+    <hr></hr>
+    <table> 
+            {%for value in data%}
+            <tr>
+                {{value}}
+            </tr>
+            {% endfor %}
+                {%for value in data.values()%}
+            </tr>
+                <td>{{ value }}</td>
+            </tr>
+            {% endfor %}
+    </table>
 </div>
 
 {% endblock %}

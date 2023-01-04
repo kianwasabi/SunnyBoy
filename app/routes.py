@@ -1,34 +1,34 @@
-from flask import Flask,  make_response , request, jsonify, render_template, UserForm
+from flask import Flask,  make_response , request, jsonify, render_template
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextField, SubmitFiled
+from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from flask_cors import CORS
 from datetime import datetime
 from database.models import *
 from config import *
+import pandas
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 # ------ forms ------
-class UserForm(FlaskForm):
+class UpdateProcessControl(FlaskForm):
     device_id = StringField("Device IP")
 
 # ------ web interface routes ------
 
 @app.route('/')
 def home():
-    return render_template("home.html")
+    weatherinfo = get_current_weatherinformation()
+    print(weatherinfo)
+    return render_template("home.html",data=weatherinfo)
 
 @app.route('/api')
 def api():
     return render_template("api.html")
 
 @app.route('/processcontrol', methods=["POST","GET"])
-def processcontrol():
-    if request.methods == "POST":
-        return render_template("processcontrol.html")    
-    else:
-        return render_template("processcontrol.html")   
+def processcontrol(): 
+    return render_template("processcontrol.html")   
         
 @app.route('/about')
 def about():
