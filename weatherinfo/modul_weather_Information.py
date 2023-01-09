@@ -32,6 +32,7 @@ def modulWeatherInfo(cityname:str, user_api:str):
     latitude = api_data['coord']['lat']
     longitude= api_data['coord']['lon']
     temperatur = ((api_data['main']['temp']) - 273.15) #°F to °C
+    temperatur = round(temperatur,3)
     weather_description = api_data['weather'][0]['description']
     timezone = api_data['timezone'] #timezone in seconds unix, UTC
     timezone_at = TimezoneFinder().timezone_at(lng=longitude,lat=latitude)

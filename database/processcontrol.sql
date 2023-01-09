@@ -1,6 +1,8 @@
 INSERT INTO device 
 VALUES 
 ('192.168.178.117:8080','Solar Panel Driver','4b8f1ddd0540ebd49a6b0ca7927e3534',1),
+('192.168.43.99:8080','Solar Panel Driver','4b8f1ddd0540ebd49a6b0ca7927e3534',1),
+('127.0.0.1:8080','Solar Panel Driver','4b8f1ddd0540ebd49a6b0ca7927e3534',1),
 ('2','Wind Turbine Driver','4b8f1ddd0540ebd49a6b0ca7927e3534',2);
 
 INSERT INTO recipe 

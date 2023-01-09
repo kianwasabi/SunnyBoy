@@ -15,15 +15,22 @@ class UpdateProcessControl(FlaskForm):
 
 # ------ web interface routes ------
 
-@app.route('/')
+@app.route('/', methods=["POST","GET"])
 def home():
-    weatherinfo = get_current_weatherinformation()
-    print(weatherinfo)
-    return render_template("home.html",data=weatherinfo)
+    if request.method=="POST":
+        location = request.form["location"]
+        device = request.headers["Host"]
+        refresh_weatherinformation(location,device)
+        weatherinfo = get_current_weatherinformation()
+        return render_template("home.html",data=weatherinfo)        
+    else: 
+        weatherinfo = get_current_weatherinformation()
+        return render_template("home.html",data=weatherinfo)
 
 @app.route('/api')
 def api():
-    return render_template("api.html")
+    apilist="test"
+    return render_template("api.html", data=apilist)
 
 @app.route('/processcontrol', methods=["POST","GET"])
 def processcontrol(): 
@@ -40,7 +47,6 @@ def message_in_Terminal(message):
     print(message.headers)
     print(message.get_json())
     print("╚════════════════════════════════════════════════════════════════╝")
-
 
 def api_response(key:str, res_data:dict):
     '''

@@ -175,7 +175,8 @@ def get_device_by_device_id(device_id):
 def refresh_weatherinformation(cityname:str,device_id:str): 
     '''
     Insert current weather data to database by using weatherinfo package. 
-    :param: none
+    :param cityname: (str) Location
+    :param device_id: (str) Device IP-Adrress
     :return: inserted weatherinformation & timestamp 
     '''
     inserted_weatherinformation = {}
@@ -285,6 +286,7 @@ def get_weatherinformation_by_id(weatherinformation_id):
         weatherinformation['cloudiness']            = row[13]
         weatherinformation['weather_description']   = row [14] 
         weatherinformation['visibility']            = row [15]
+        weatherinformation['created']               = row [16]
     except Error as e: 
         print(f"👎 Get weatherinformation by id from database failed. Error: {e}")
     finally:
@@ -356,3 +358,17 @@ def post_panelposition(val1,val2):
         conn.close()
     print("Server: post_panelposition executed.")    
     return panelposition, datetime.now()
+
+def get_api_url():
+    '''
+    Returns all api urls.
+    :param: none
+    :return apis : dict of apis
+    '''
+    apiurls = {}
+    try:
+        print("tbd")
+    except Error as e:  
+        print(f"👎 Get api urls from database failed. Error: {e}")
+    print("Server: get_api_url executed.") 
+    return apiurls    

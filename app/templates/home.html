@@ -2,22 +2,27 @@
 {% block content %}
 <div class="home">
     <h1>Weather Information</h1>
-    <input type="text" placeholder="Location"/>
-    <button>Update</button>
     <hr></hr>
-    <table> 
-            {%for value in data%}
-            <tr>
-                {{value}}
-            </tr>
-            {% endfor %}
-                {%for value in data.values()%}
-            </tr>
-                <td>{{ value }}</td>
-            </tr>
-            {% endfor %}
+    <form method="post">
+    <input type="text" value="Braunschweig" name="location"/>
+    <button type="submit"> Update </button>
+    </form>
+    <table class="center"> 
+            <thead>
+                <tr>
+                    <th>Key</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for key, value in data.items() %}
+                <tr>
+                    <td> {{ key }} </td>
+                    <td> {{ value }} </td>
+                </tr>
+                {% endfor %}
+            </tbody>
     </table>
 </div>
-
 {% endblock %}
 
