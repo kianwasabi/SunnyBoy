@@ -172,7 +172,80 @@ def get_device_by_device_id(device_id):
     print("Server: get_device_by_device_id executed.")
     return device
 
-def refresh_weatherinformation(cityname:str,device_id:str): 
+def get_steps():
+    '''
+    :return: 
+    '''
+    steps = {}
+    try: 
+        sql="SELECT * FROM step;"
+        conn = connect_to_db()
+        cur = conn.cursor()
+        cur.execute(sql)
+        rows = cur.fetchall()
+        steps = rows
+    except Error as e:
+        print(f"👎 Get steps from database failed. Error: {e}")
+    finally:
+        conn.close()
+    print("Server: get_steps executed.")
+    return steps
+
+def get_devices():
+    '''
+    :return: 
+    '''
+    devices = {}
+    try: 
+        sql = "SELECT * FROM device;"
+        conn = connect_to_db()
+        cur = conn.cursor()
+        cur.execute(sql)
+        rows = cur.fetchall()
+        devices = rows
+    except Error as e:
+        print(f"👎 Get devices from database failed. Error: {e}")
+    finally:
+        conn.close()
+    print("Server: get_devices executed.")
+    return devices
+
+def get_requestkeys():
+    '''
+    Returns all api urls.
+    :param: none
+    :return apis : dict of apis
+    '''
+    requestkeys = {}
+    try:
+        sql = "SELECT * FROM requestkey;"
+        conn = connect_to_db()
+        cur = conn.cursor()
+        cur.execute(sql)
+        rows = cur.fetchall()
+        requestkeys = rows
+    except Error as e:  
+        print(f"👎 Get get_requestkeys from database failed. Error: {e}")
+    print("Server: get_requestkeys executed.") 
+    return requestkeys    
+
+def get_responskeys():
+    '''
+    '''
+    apiurls = {}
+    try:
+        sql = "SELECT * FROM device;"
+        conn = connect_to_db()
+        cur = conn.cursor()
+        cur.execute(sql)
+        rows = cur.fetchall()
+        apiurls = rows
+    except Error as e:  
+        print(f"👎 Get api urls from database failed. Error: {e}")
+    print("Server: get_api_url executed.") 
+    return apiurls    
+
+def set_weatherinformation(cityname:str,device_id:str): 
     '''
     Insert current weather data to database by using weatherinfo package. 
     :param cityname: (str) Location
@@ -234,7 +307,7 @@ def refresh_weatherinformation(cityname:str,device_id:str):
         print(f"👎 Insert into database failed. Error: {e}")
     finally:
         conn.close()
-    print("Server: refresh_weatherinformation executed.")
+    print("Server: set_weatherinformation executed.")
     return inserted_weatherinformation, datetime.now()
 
 def get_current_weatherinformation():
@@ -358,17 +431,3 @@ def post_panelposition(val1,val2):
         conn.close()
     print("Server: post_panelposition executed.")    
     return panelposition, datetime.now()
-
-def get_api_url():
-    '''
-    Returns all api urls.
-    :param: none
-    :return apis : dict of apis
-    '''
-    apiurls = {}
-    try:
-        print("tbd")
-    except Error as e:  
-        print(f"👎 Get api urls from database failed. Error: {e}")
-    print("Server: get_api_url executed.") 
-    return apiurls    

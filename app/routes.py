@@ -1,6 +1,4 @@
 from flask import Flask,  make_response , request, jsonify, render_template
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from flask_cors import CORS
 from datetime import datetime
 from database.models import *
@@ -9,18 +7,14 @@ from config import *
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-# ------ forms ------
-class UpdateProcessControl(FlaskForm):
-    device_id = StringField("Device IP")
-
 # ------ web interface routes ------
 
 @app.route('/', methods=["POST","GET"])
 def home():
-    if request.method=="POST":
+    if request.method == "POST":
         location = request.form["location"]
         device = request.headers["Host"]
-        refresh_weatherinformation(location,device)
+        set_weatherinformation(location,device)
         weatherinfo = get_current_weatherinformation()
         return render_template("home.html",data=weatherinfo)        
     else: 
@@ -29,11 +23,11 @@ def home():
 
 @app.route('/api')
 def api():
-    apilist="test"
-    return render_template("api.html", data=apilist)
+    return render_template("api.html")
 
 @app.route('/processcontrol', methods=["POST","GET"])
 def processcontrol(): 
+    print(get_devices())
     return render_template("processcontrol.html")   
         
 @app.route('/about')
@@ -91,12 +85,12 @@ def api_requestrecipe():
     return response
 
 @app.route('/api/post/weatherinformation/refresh', methods=['POST'])
-def api_post_weatherinformation_refresh():
+def api_post_weatherinformation():
     # http request
     req_data, device, key = api_request()
     cityname = req_data["Request_Data"]["Location"]
     # server operation
-    _, time_refreshed = refresh_weatherinformation(cityname,device)
+    _, time_refreshed = set_weatherinformation(cityname,device)
     # http response 
     res_data = {
         "Response_Data": 

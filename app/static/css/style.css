@@ -1,24 +1,16 @@
-body {
-  margin: 0;
-  padding: 0;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  color: #444;
-  text-align: center;
-}
-/*
- * Formatting the header area
- */
+/*HEADER*/
 header {
-  background-color: #DFB887;
-  height: 35px;
-  width: 100%;
+  background-color: #fec308;
+  height: 40px;
+  width: auto;
   opacity: .9;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   text-align: center;
 }
 header h1.logo {
-  margin: 0;
-  font-size: 1.7em;
+  margin-left: 10px;
+  margin-top: 0px;
+  font-size: 2em;
   color: #fff;
   text-transform: uppercase;
   float: left;
@@ -27,15 +19,44 @@ header h1.logo:hover {
   color: #fff;
   text-decoration: none;
 }
-/*
- * Centering the body content
- */
+h1 {
+  font-size: 3em;
+  margin-top: 40px;
+  text-align: center;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 80;
+  letter-spacing: -1.5px;
+}
+/*BODY*/
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #111010;
+}
 .container {
+  /*Centering the body content*/
   width: auto;
-  margin: 0 auto;
+  margin: auto;
 }
 div.home {
-  padding: 10px 0 30px 0;
+  padding: 10px 10px 30px 10px;
+  background-color: #E6E6FA;
+  -webkit-border-radius: 6px;
+     -moz-border-radius: 6px;
+          border-radius: 6px;
+  text-align: center;
+}
+div.api {
+  padding: 10px 10px 30px 10px;
+  background-color: #E6E6FA;
+  -webkit-border-radius: 6px;
+     -moz-border-radius: 6px;
+          border-radius: 6px;
+  text-align: center;
+}
+div.processcontrol {
+  padding: 10px 10px 30px 10px;
   background-color: #E6E6FA;
   -webkit-border-radius: 6px;
      -moz-border-radius: 6px;
@@ -43,29 +64,16 @@ div.home {
   text-align: center;
 }
 div.about {
-  padding: 10px 0 30px 0;
+  padding: 10px 10px 30px 10px;
   background-color: #E6E6FA;
   -webkit-border-radius: 6px;
      -moz-border-radius: 6px;
           border-radius: 6px;
 }
-h2 {
-  font-size: 3em;
-  margin-top: 40px;
-  text-align: center;
-  letter-spacing: -2px;
-}
-h3 {
-  font-size: 1.7em;
-  font-weight: 100;
-  margin-top: 30px;
-  text-align: center;
-  letter-spacing: -1px;
-  color: #999;
-}
+/*MENU*/
 .menu {
   float: right;
-  margin-top: 8px;
+  margin: 10px;
 }
 .menu li {
   display: inline;
@@ -77,8 +85,18 @@ h3 {
 }
 .menu li a {
   text-align: center;
-  color: #444;
+  color: #111010;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   text-decoration: none;
+}
+/*CONTENT(INPUT,TABLE,BUTTON,...)*/
+h2 {
+  font-size: 1.7em;
+  font-weight: 100;
+  margin-top: 30px;
+  text-align: center;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #111010;
 }
 button{
   font-size: 1.0em;
@@ -94,14 +112,24 @@ input{
 }
 table, td
 {
-  border: 1px solid black;
+  border: 0.5px solid #111010;
   border-collapse: collapse;
-  font-size: 1.0em;
-  font-weight: 100;
-  margin-top: 10px;
-  text-align: center;
+  font: #111010;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 2px;
+  text-align: left;
+  margin-top: 20px;
+}
+th
+{
+  border: 0.5px solid #111010;
+  border-collapse: collapse;
+  font: #111010;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 table.center {
-  margin-left:auto; 
-  margin-right:auto;
+  margin: auto;
 }
+
