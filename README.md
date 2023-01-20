@@ -1,7 +1,18 @@
-# Weather_Information
+# Web-Application Porject #1 Weather Information!
+A Weather Application that is connected to the OpenWeather API, displays Weatherinformation and  administers and controls several ioT clients. 
+
+## Project Status: 
+- IN PROGRESS
+
+## Built With:
 - Flask
 - SQLite3
-- Jinja2
+- http/css
+
+## Concept: 
+- Device Managment 
 - Rest API
 - Web Application
-- .... PROJECT IN PROGRESS ... 
+
+## Author: 
+Kian David Warias

@@ -1,5 +1,8 @@
 {% extends "layout.html" %}
 {% block content %}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <div class="home">
     <h2>Weather Information</h2>
     <hr></hr>
@@ -24,6 +27,85 @@
                 {% endfor %}
             </tbody>
     </table>
+	<div class="row">
+		<div class="col">
+			<div class="weather-card one">
+				<div class="top">
+					<div class="wrapper">
+						<div class="mynav">
+							<a href="javascript:;"><span class="lnr lnr-chevron-left"></span></a>
+							<a href="javascript:;"><span class="lnr lnr-cog"></span></a>
+						</div>
+						<h1 class="heading"></h1>
+						<h3 class="location">{{data["locationname"]}}</h3>
+						<li class="li-without-bullets">
+							<span>Lng:</span>
+							<span>{{data["longitude"]}}°</span>
+							<span>|</span>
+							<span>Lat:</span>
+							<span>{{data["latitude"]}}°</span>
+						</li>								<span class="temp">{{data["location_time"]}}</span>					
+						<p class="temp">
+							<span class="temp-value">{{data["temperatur"]}}</span>
+							<a href="javascript:;"><span class="temp-type">°C</span></a>
+						</p>
+						<li class="li-without-bullets">
+							<span>{{data["weather_description"]}}</span>
+						</li>
+						<li class="li-without-bullets">
+							<span>{{data["cloudiness"]}}% cloudiness</span>
+						</li>
+					</div>
+				</div>
+				<div class="middle">
+					<div class="wrapper">
+						<div class="wind">
+							<a href="javascript:;"><span class="lnr lnr-chevron-up go-up"></span></a>
+							<li class="active">
+								<span class="lnr lnr-sun condition">
+									<span class="temp">{{data["wind_speed"]}} km/h</span>
+								</span>
+							</li>
+							<li class="active">
+								<span class="lnr lnr-sun condition">
+									<span class="temp"> {{data["wind_direction"]}}</span>
+								</span>
+							</li>
+						</div>
+					</div>
+				</div>
+				<div class="button">
+					<div class="wrapper">
+						<div class="sun">
+							<li>
+								<a href="javascript:;"><span class="lnr lnr-chevron-up go-up"></span></a>
+								<li class="active">
+									<span class="lnr lnr-sun condition">
+										<span>Azimuth:</span>
+										<span>{{data["azimuth"]}}°</span>
+									</span>
+								</li>
+								<li class="active">
+									<span class="lnr lnr-sun condition">
+										<span>Elevation:</span>
+										<span> {{data["elevation"]}}°</span>
+									</span>
+								</li>
+								<li class="active">
+									<span class="lnr lnr-sun condition">
+										<span>Sun:</span>
+										<span> {{data["sunrise"]}} </span>
+										<span> until</span>
+										<span>  {{data["sunset"]}}</span>
+									</span>
+								</li>
+							</li>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 {% endblock %}
 

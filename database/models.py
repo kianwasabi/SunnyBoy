@@ -314,7 +314,7 @@ def get_current_weatherinformation():
     '''
     Returns the most recent weatherinformation from the database.
     :param: none
-    :return weatherinformation : current weatherinformation
+    :return weatherinformation : 'locationname','longitude','latitude','location_time','timezone','azimuth','elevation','sunrise','sunset','wind_speed','wind_direction','temperatur','cloudiness','weather_description','visibility' 
     '''
     weatherinformation = {}
     try:
