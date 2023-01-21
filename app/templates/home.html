@@ -1,8 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
 <div class="home">
     <h2>Weather Information</h2>
     <hr></hr>
@@ -10,32 +8,11 @@
     <input type="text" value="Braunschweig" name="location"/>
     <button type="submit"> Update </button>
     </form>
-    <br></br>
-    <table class="center"> 
-            <thead>
-                <tr>
-                    <th>Key</th>
-                    <th>Value</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for key, value in data.items() %}
-                <tr>
-                    <td> {{ key }} </td>
-                    <td> {{ value }} </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-    </table>
 	<div class="row">
 		<div class="col">
 			<div class="weather-card one">
 				<div class="top">
 					<div class="wrapper">
-						<div class="mynav">
-							<a href="javascript:;"><span class="lnr lnr-chevron-left"></span></a>
-							<a href="javascript:;"><span class="lnr lnr-cog"></span></a>
-						</div>
 						<h1 class="heading"></h1>
 						<h3 class="location">{{data["locationname"]}}</h3>
 						<li class="li-without-bullets">
@@ -44,10 +21,11 @@
 							<span>|</span>
 							<span>Lat:</span>
 							<span>{{data["latitude"]}}°</span>
-						</li>								<span class="temp">{{data["location_time"]}}</span>					
+						</li>								
+						<span class="temp">{{data["location_time"]}}</span>					
 						<p class="temp">
-							<span class="temp-value">{{data["temperatur"]}}</span>
-							<a href="javascript:;"><span class="temp-type">°C</span></a>
+							<span class="temp-value">{{data["temperatur"]}}°C</span>
+							
 						</p>
 						<li class="li-without-bullets">
 							<span>{{data["weather_description"]}}</span>
@@ -59,48 +37,31 @@
 				</div>
 				<div class="middle">
 					<div class="wrapper">
-						<div class="wind">
-							<a href="javascript:;"><span class="lnr lnr-chevron-up go-up"></span></a>
-							<li class="active">
-								<span class="lnr lnr-sun condition">
-									<span class="temp">{{data["wind_speed"]}} km/h</span>
-								</span>
-							</li>
-							<li class="active">
-								<span class="lnr lnr-sun condition">
-									<span class="temp"> {{data["wind_direction"]}}</span>
-								</span>
-							</li>
-						</div>
+						<p class="wind_speed">
+							<span class="wind_speed-value">{{data["wind_speed"]}} km/h</span>
+						</p>
+						<li class="li-without-bullets">
+							<span>{{data["wind_direction"]}}</span>
+						</li>
 					</div>
 				</div>
-				<div class="button">
+				<div class="bottom">
 					<div class="wrapper">
-						<div class="sun">
-							<li>
-								<a href="javascript:;"><span class="lnr lnr-chevron-up go-up"></span></a>
-								<li class="active">
-									<span class="lnr lnr-sun condition">
-										<span>Azimuth:</span>
-										<span>{{data["azimuth"]}}°</span>
-									</span>
-								</li>
-								<li class="active">
-									<span class="lnr lnr-sun condition">
-										<span>Elevation:</span>
-										<span> {{data["elevation"]}}°</span>
-									</span>
-								</li>
-								<li class="active">
-									<span class="lnr lnr-sun condition">
-										<span>Sun:</span>
-										<span> {{data["sunrise"]}} </span>
-										<span> until</span>
-										<span>  {{data["sunset"]}}</span>
-									</span>
-								</li>
-							</li>
-						</div>
+						<p class="sun_position">
+							<span>Azimuth:</span>
+							<span class="sun_position-value">{{data["azimuth"]}}°</span>
+						</p>
+						<p class="sun_position">						
+							<span>Elevation:</span>
+							<span class="sun_position-value">{{data["elevation"]}}°</span>
+						</p>
+						<li class="li-without-bullets">
+							<span>Sunrise:</span>
+							<span> {{data["sunrise"]}} </span>
+							<span>|</span>
+							<span>Sunset:</span>
+							<span> {{data["sunset"]}}</span>
+						</li>
 					</div>
 				</div>
 			</div>
