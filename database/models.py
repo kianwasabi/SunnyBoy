@@ -115,28 +115,28 @@ def get_recipe_by_device_id(device_id):
         cur = conn.cursor()
         cur = conn.execute(sql_step,args)
         rows = cur.fetchall()
-        for i, item in enumerate(rows):
-            #step key
-            element_key = {f"{i}":item[0]}
-            key.update(element_key)
-            #step method
-            element_method = {f"{i}":item[1]}
-            method.update(element_method)
-            #step route
-            element_route = {f"{i}":item[2]}
-            route.update(element_route)
-        
-        for i, val in enumerate(key.values()):
-            #step req keys dict
-            cur = conn.execute(sql_req,(val,)) 
-            ele = cur.fetchall()
-            element_reqkey = {f"{i}":ele}
-            reqkeys.update(element_reqkey)
-            #step res keys dict
-            cur = conn.execute(sql_res,(val,)) 
-            ele = cur.fetchall()
-            element_reskey = {f"{i}":ele}
-            reskeys.update(element_reskey)
+        if rows is not None:
+            for i, item in enumerate(rows):
+                #step key
+                element_key = {f"{i}":item[0]}
+                key.update(element_key)
+                #step method
+                element_method = {f"{i}":item[1]}
+                method.update(element_method)
+                #step route
+                element_route = {f"{i}":item[2]}
+                route.update(element_route)
+            for i, val in enumerate(key.values()):
+                #step req keys dict
+                cur = conn.execute(sql_req,(val,)) 
+                ele = cur.fetchall()
+                element_reqkey = {f"{i}":ele}
+                reqkeys.update(element_reqkey)
+                #step res keys dict
+                cur = conn.execute(sql_res,(val,)) 
+                ele = cur.fetchall()
+                element_reskey = {f"{i}":ele}
+                reskeys.update(element_reskey)
     except Error as e:
         print(f"👎 Fetch Recipe failed. Error: {e}")
     finally:
@@ -162,9 +162,10 @@ def get_device_by_device_id(device_id):
         cur = conn.cursor()
         cur.execute(sql,arg)
         row = cur.fetchone()
-        device["device_id"] = row[0]
-        device["device_name"] = row[1]
-        device["api_key"] = row[2]
+        if row is not None:
+            device["device_id"] = row[0]
+            device["device_name"] = row[1]
+            device["api_key"] = row[2]
     except Error as e:
         print(f"👎 Insert into database failed. Error: {e}")
     finally:
@@ -183,7 +184,8 @@ def get_steps():
         cur = conn.cursor()
         cur.execute(sql)
         rows = cur.fetchall()
-        steps = rows
+        if rows is not None:
+            steps = rows
     except Error as e:
         print(f"👎 Get steps from database failed. Error: {e}")
     finally:
@@ -202,7 +204,8 @@ def get_devices():
         cur = conn.cursor()
         cur.execute(sql)
         rows = cur.fetchall()
-        devices = rows
+        if rows is not None:
+            devices = rows
     except Error as e:
         print(f"👎 Get devices from database failed. Error: {e}")
     finally:
@@ -223,7 +226,8 @@ def get_requestkeys():
         cur = conn.cursor()
         cur.execute(sql)
         rows = cur.fetchall()
-        requestkeys = rows
+        if rows is not None:
+            requestkeys = rows
     except Error as e:  
         print(f"👎 Get get_requestkeys from database failed. Error: {e}")
     print("Server: get_requestkeys executed.") 
@@ -239,7 +243,8 @@ def get_responskeys():
         cur = conn.cursor()
         cur.execute(sql)
         rows = cur.fetchall()
-        apiurls = rows
+        if rows is not None:
+            apiurls = rows
     except Error as e:  
         print(f"👎 Get api urls from database failed. Error: {e}")
     print("Server: get_api_url executed.") 
@@ -343,23 +348,24 @@ def get_weatherinformation_by_id(weatherinformation_id):
             cur.execute(sql,args)
         row = cur.fetchone()
         # convert row object to dictionary
-        weatherinformation['weather_id']            = row[0]
-        weatherinformation['locationname']          = row[1]
-        weatherinformation['longitude']             = row[2] 
-        weatherinformation['latitude']              = row[3]
-        weatherinformation['location_time']         = row[4]
-        weatherinformation['timezone']              = row[5]
-        weatherinformation['azimuth']               = row[6]
-        weatherinformation['elevation']             = row[7]
-        weatherinformation['sunrise']               = row[8]
-        weatherinformation['sunset']                = row[9]
-        weatherinformation['wind_speed']            = row[10] 
-        weatherinformation['wind_direction']        = row[11]
-        weatherinformation['temperatur']            = row[12]
-        weatherinformation['cloudiness']            = row[13]
-        weatherinformation['weather_description']   = row [14] 
-        weatherinformation['visibility']            = row [15]
-        weatherinformation['created']               = row [16]
+        if row is not None: 
+            weatherinformation['weather_id']            = row[0]
+            weatherinformation['locationname']          = row[1]
+            weatherinformation['longitude']             = row[2] 
+            weatherinformation['latitude']              = row[3]
+            weatherinformation['location_time']         = row[4]
+            weatherinformation['timezone']              = row[5]
+            weatherinformation['azimuth']               = row[6]
+            weatherinformation['elevation']             = row[7]
+            weatherinformation['sunrise']               = row[8]
+            weatherinformation['sunset']                = row[9]
+            weatherinformation['wind_speed']            = row[10] 
+            weatherinformation['wind_direction']        = row[11]
+            weatherinformation['temperatur']            = row[12]
+            weatherinformation['cloudiness']            = row[13]
+            weatherinformation['weather_description']   = row [14] 
+            weatherinformation['visibility']            = row [15]
+            weatherinformation['created']               = row [16]
     except Error as e: 
         print(f"👎 Get weatherinformation by id from database failed. Error: {e}")
     finally:
@@ -401,8 +407,9 @@ def get_sunposition_by_id(sunposition_id):
             cur.execute(sql,args)
         row = cur.fetchone()
         #row to dict
-        sunposition['azimuth'] = row[0]
-        sunposition['elevation'] = row[1]
+        if row is not None:
+            sunposition['azimuth'] = row[0]
+            sunposition['elevation'] = row[1]
     except Error as e:
         print(f"👎 Get sunposition by id from database failed. Error: {e}")
     print("Server: get_sunposition_by_id executed.") 
