@@ -1,5 +1,5 @@
-# Web-Application Porject #1 Weather Information!
-A Weather Application that is connected to the OpenWeather API, displays Weatherinformation and  administers and controls several ioT clients. 
+# Web-Application Project #1 Weather Information!
+A Weather Application that is connected to the OpenWeather API displays Weatherinformation and administers and controls several ioT clients. 
 
 ## Project Status: 
 - IN PROGRESS
