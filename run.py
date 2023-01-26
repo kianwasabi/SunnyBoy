@@ -4,8 +4,8 @@ from config import *
 
 def main(): 
 
-    #drop_db_table()
-    #create_db_table("schema.sql","processcontrol.sql")
+    drop_db_table()
+    create_db_table("schema.sql","processcontrol.sql")
     try: 
         app.run(hostIP, port, debug=True)
         print("🫡 Server started")
