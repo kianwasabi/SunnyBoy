@@ -9,10 +9,16 @@ class Time():
         self.timezone = timezone
     def getDate(self):
         '''return date at timezone - string'''
-        return f"{self.day}.{self.month}.{self.year}"
+        d = "{:02d}".format(self.day)
+        m = "{:02d}".format(self.month)
+        y = "{:04d}".format(self.year)
+        return f"{d}.{m}.{y}"
     def getTime(self):
         '''return time at Timezone - string'''
-        return f"{self.hour}:{self.minute}:{self.minute}"
+        h = "{:02d}".format(self.hour)
+        m = "{:02d}".format(self.minute)
+        s = "{:02d}".format(self.second)
+        return f"{h}:{m}:{s}"
     def getTimezone(self):
         '''return Timezone - string'''
         return f"{self.timezone}"
