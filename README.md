@@ -10,11 +10,11 @@ A Weather Application that is connected to the OpenWeather API displays Weatheri
 - http/css
 
 ## Concept: 
+![IMG_0081](https://user-images.githubusercontent.com/55065075/216689412-49002b2a-782c-494d-abff-c253f597cb40.png)
+![IMG_0082](https://user-images.githubusercontent.com/55065075/216689615-d3a9c125-5d25-4986-9b0b-50e710d2f788.png)
 - Device Managment 
 - Rest API
 - Web Application
-
-
 
 ## Author: 
 Kian David Warias
