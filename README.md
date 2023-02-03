@@ -14,5 +14,7 @@ A Weather Application that is connected to the OpenWeather API displays Weatheri
 - Rest API
 - Web Application
 
+
+
 ## Author: 
 Kian David Warias
