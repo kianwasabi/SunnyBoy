@@ -3,6 +3,10 @@ import sqlite3
 from sqlite3 import Error
 import os
 from weatherinfo.modul_weather_Information import *
+from collections import defaultdict
+
+def def_value_dict():
+    return "Not Present"
 
 # ------ Database Managment ------
 def connect_to_db():
@@ -76,12 +80,12 @@ def get_recipe_by_device_id(device_id):
     :param device_id: device id from request
     :return: recipe list
     '''
-    recipe = {}
-    method = {}
-    route = {}
-    key = {}
-    reqkeys = {} #keys in dict for request message
-    reskeys = {} #keys in dict for response message
+    recipe = defaultdict(def_value_dict)
+    method = defaultdict(def_value_dict)
+    route = defaultdict(def_value_dict)
+    key = defaultdict(def_value_dict)
+    reqkeys = defaultdict(def_value_dict) #keys in dict for request message
+    reskeys = defaultdict(def_value_dict) #keys in dict for response message
     try:
         conn = connect_to_db()
         sql_step =   "SELECT \
@@ -154,7 +158,8 @@ def get_device_by_device_id(device_id):
     '''
     :return: 
     '''
-    device = {}
+    device = defaultdict(def_value_dict)
+
     try: 
         sql="SELECT * FROM device WHERE device_id = ?;"
         arg=(device_id,)
@@ -165,7 +170,7 @@ def get_device_by_device_id(device_id):
         if row is not None:
             device["device_id"] = row[0]
             device["device_name"] = row[1]
-            device["api_key"] = row[2]
+            device["api_key"] = row[2]  
     except Error as e:
         print(f"👎 Insert into database failed. Error: {e}")
     finally:
@@ -177,7 +182,7 @@ def get_steps():
     '''
     :return: 
     '''
-    steps = {}
+    steps = defaultdict(def_value_dict)
     try: 
         sql="SELECT * FROM step;"
         conn = connect_to_db()
@@ -197,7 +202,7 @@ def get_devices():
     '''
     :return: 
     '''
-    devices = {}
+    devices = defaultdict(def_value_dict)
     try: 
         sql = "SELECT * FROM device;"
         conn = connect_to_db()
@@ -219,7 +224,7 @@ def get_requestkeys():
     :param: none
     :return apis : dict of apis
     '''
-    requestkeys = {}
+    requestkeys = defaultdict(def_value_dict)
     try:
         sql = "SELECT * FROM requestkey;"
         conn = connect_to_db()
@@ -236,7 +241,7 @@ def get_requestkeys():
 def get_responskeys():
     '''
     '''
-    apiurls = {}
+    apiurls = defaultdict(def_value_dict)
     try:
         sql = "SELECT * FROM device;"
         conn = connect_to_db()
@@ -257,7 +262,7 @@ def set_weatherinformation(cityname:str,device_id:str):
     :param device_id: (str) Device IP-Adrress
     :return: inserted weatherinformation & timestamp 
     '''
-    inserted_weatherinformation = {}
+    inserted_weatherinformation = defaultdict(def_value_dict)
     device_info = get_device_by_device_id(device_id)
     api_key = device_info["api_key"]
     weather, wind, sun = modulWeatherInfo(cityname,api_key)
@@ -321,7 +326,7 @@ def get_current_weatherinformation():
     :param: none
     :return weatherinformation : 'locationname','longitude','latitude','location_time','timezone','azimuth','elevation','sunrise','sunset','wind_speed','wind_direction','temperatur','cloudiness','weather_description','visibility' 
     '''
-    weatherinformation = {}
+    weatherinformation = defaultdict(def_value_dict)
     try:
         weatherinformation = get_weatherinformation_by_id("MAX")
     except Error as e:  
@@ -335,7 +340,7 @@ def get_weatherinformation_by_id(weatherinformation_id):
     :param weatherinformation_id: (int) id in database
     :return weatherinformation: weatherinformation by id
     '''
-    weatherinformation = {}
+    weatherinformation = defaultdict(def_value_dict)
     try:
         conn = connect_to_db()
         cur = conn.cursor()
@@ -379,7 +384,7 @@ def get_current_sunposition():
     :param: none
     :return weatherinformation : current weatherinformation
     '''
-    sunposition = {}
+    sunposition = defaultdict(def_value_dict)
     try:
         sunposition = get_sunposition_by_id("MAX")
     except Error as e:  
@@ -393,7 +398,7 @@ def get_sunposition_by_id(sunposition_id):
     :param sunposition_id: (int) id in database
     :return sunposition: sunposition by id
     '''
-    sunposition = {}
+    sunposition = defaultdict(def_value_dict)
     try:
         conn = connect_to_db()
         cur = conn.cursor()
