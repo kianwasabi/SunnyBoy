@@ -3,12 +3,12 @@ from flask_cors import CORS
 from datetime import datetime
 from database.models import *
 from config import *
+import subprocess
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 # ------ web interface routes ------
-
 @app.route('/', methods=["POST","GET"])
 def home():
     if request.method == "POST":
@@ -20,6 +20,14 @@ def home():
     else: 
         weatherinfo = get_current_weatherinformation()
         return render_template("home.html",data=weatherinfo)
+
+@app.route('/shutdown')
+def shutdown():
+    #restart
+    #subprocess.run("shutdown -r 0", shell=True, check=True)
+    #shutdown
+    subprocess.run("shutdown -h 0", shell=True, check=True)
+    return "Shuting down server ... "
 
 @app.route('/api')
 def api():
@@ -33,7 +41,6 @@ def processcontrol():
 @app.route('/about')
 def about():
     return render_template("about.html")
-
 # ------ device routes ------ 
 
 def message_in_Terminal(message):
