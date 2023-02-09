@@ -140,7 +140,7 @@ table.center {
   margin: 20px auto;
   height: auto;
   width: 450px;
-  background: #fff;
+  /* background: #fff; */
   box-shadow: 0 1px 38px rgba(0, 0, 0, 0.15), 0 5px 12px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
   overflow: hidden;
@@ -150,8 +150,8 @@ table.center {
   height: auto;
   width: 100%;
   overflow: hidden;
-  background-color:rgb(182, 179, 175);
-  background-image: url(../../images/weathercard/00_Background_Top.jpg) no-repeat;
+  /* background-color:rgb(182, 179, 175); */
+  background-image: url('/../../images/weathercard/00_Background_Top.jpg') no-repeat;
   background-size: cover;
   background-position: center center;
   text-align: center;
