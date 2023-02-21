@@ -41,12 +41,11 @@ def processcontrol():
 @app.route('/about')
 def about():
     return render_template("about.html")
-# ------ device routes ------ 
-
+# ------ device routes ------
 def message_in_Terminal(message):
     print("╔════════════════════════════════════════════════════════════════╗")
     print(message.headers)
-    print(message.get_json())
+    print(message.text)
     print("╚════════════════════════════════════════════════════════════════╝")
 
 def api_response(key:str, res_data:dict):

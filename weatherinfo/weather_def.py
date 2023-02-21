@@ -6,7 +6,7 @@ class Weather(Location):
         self.temperatur = temperatur
         self.weather_descr = weather_descr
         self.cloudiness = cloudiness
-        self.visibility = visibility
+        self.visibility = visibility  
     def getTemperatur(self):
         return f"{self.temperatur}"
     def getWeatherDiscription(self):

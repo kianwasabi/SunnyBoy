@@ -150,8 +150,8 @@ table.center {
   height: auto;
   width: 100%;
   overflow: hidden;
-  /* background-color:rgb(182, 179, 175); */
-  background-image: url('/../../images/weathercard/00_Background_Top.jpg') no-repeat;
+  background-color:rgb(182, 179, 175);
+  /*background-image: url('./images/00_Background_Top.jpg');*/
   background-size: cover;
   background-position: center center;
   text-align: center;
@@ -203,7 +203,9 @@ table.center {
   width: 100%;
   overflow: hidden;
   background-color:rgb(122, 203, 221);
-  background-image: url(../../images/weathercard/01_WindMile_Middle.jpg) no-repeat;
+  /*background-image: url('./images/01_WindMile_Middle.jpg');*/
+  background-image: url('./images/Counter_rotating_wind_turbine_animation.gif');
+  /*background-blend-mode: difference;*/
   background-size: cover;
   background-position: center center;
   text-align: center;
@@ -223,7 +225,7 @@ table.center {
   display: inline-block;
   font-size: 50px;
   font-weight: 600;
-  color: #fff;
+  color: black;
 }
 .weather-card .middle .wrapper .li-without-bullets {
   list-style-type: none;
@@ -235,7 +237,9 @@ table.center {
   width: 100%;
   overflow: hidden;
   background-color:#f2eb66;
-  /*background: url(../../images/weathercard/02_Photovoltaik_Positioning_Botton.jpg) no-repeat;*/
+  /*background: url('./images/02_Photovoltaik_Positioning_Botton.jpg');*/
+  background: url('./images/200w.gif');
+  background-blend-mode:lighten;
   background-size: cover;
   background-position: center center;
   text-align: center;
@@ -262,7 +266,7 @@ table.center {
   display: inline-block;
   font-size: 50px;
   font-weight: 600;
-  color: #fff;
+  color: black;
 }
 .weather-card .bottom .wrapper .li-without-bullets {
   list-style-type: none;

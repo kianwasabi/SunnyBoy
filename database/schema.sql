@@ -21,7 +21,6 @@ CREATE TABLE IF NOT EXISTS recipe_step(
 
 CREATE TABLE IF NOT EXISTS step(
   step_id INTEGER PRIMARY KEY,       --Key in Header
-  --domain  TEXT NOT NULL,             --URL:Domain   --currently in response header
   method  TEXT NOT NULL,             --URL:Method
   route   TEXT NOT NULL              --URL:Resource Path
 );
