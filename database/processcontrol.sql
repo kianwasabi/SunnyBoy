@@ -1,9 +1,10 @@
 INSERT INTO device 
 VALUES 
-('192.168.178.121:8080','Solar Panel Driver','4b8f1ddd0540ebd49a6b0ca7927e3534',1),
---('192.168.178.117:8080','Solar Panel Driver','4b8f1ddd0540ebd49a6b0ca7927e3534',1),
-('192.168.178.122:8080','Wind Turbine Driver','4b8f1ddd0540ebd49a6b0ca7927e3534',2);
-
+('172.20.10.2:8080','Solar Panel Driver','4b8f1ddd0540ebd49a6b0ca7927e3534',1),
+('192.168.0.228:8080','Solar Panel Driver','4b8f1ddd0540ebd49a6b0ca7927e3534',1),
+('192.168.178.122:8080','Wind Turbine Driver','4b8f1ddd0540ebd49a6b0ca7927e3534',2),
+('192.168.178.117:8080','Solar Panel Driver','4b8f1ddd0540ebd49a6b0ca7927e3534',2),
+('192.168.178.62:8080','Solar Panel Driver','4b8f1ddd0540ebd49a6b0ca7927e3534',1);
 INSERT INTO recipe 
 VALUES
 (1,'Adjust Solar Panel'), 

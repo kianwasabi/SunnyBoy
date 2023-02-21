@@ -4,6 +4,7 @@ from sqlite3 import Error
 import os
 from weatherinfo.modul_weather_Information import *
 from collections import defaultdict
+from config import *
 
 def def_value_dict():
     return "Not Present"
@@ -145,7 +146,7 @@ def get_recipe_by_device_id(device_id):
         print(f"👎 Fetch Recipe failed. Error: {e}")
     finally:
         conn.close()
-        recipe["domain"] = "domain=header['Device']"
+        recipe["domain"] = f"http://{hostIP}:{port}"
         recipe["method"] = method
         recipe["route"]  = route
         recipe["key"]  = key

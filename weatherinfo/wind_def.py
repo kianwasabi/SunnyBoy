@@ -4,7 +4,7 @@ class Wind(Location):
     def __init__(self, wind_speed, wind_direction, name,longitude, latitude, timestamp, timezone):
         Location.__init__(self, name, longitude, latitude, timestamp, timezone)
         self.speed = wind_speed
-        self.direction = wind_direction
+        self.direction = wind_direction     
     def getWindSpeed(self):
         return f"{self.speed}"
     def getDirectionDegree(self):
