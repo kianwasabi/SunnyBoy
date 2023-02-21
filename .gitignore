@@ -25,3 +25,6 @@ venv.bak/
 
 # Git
 .gitattributes
+
+# Database
+.db
