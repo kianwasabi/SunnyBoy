@@ -1,14 +1,14 @@
 #include libraries
-import os
-import os.path
+#import os
+#import os.path
 from datetime import datetime
 import pytz
 from timezonefinder import TimezoneFinder
 from .weatherAPI_call import callOpenWeatherAPI
-from .sun_def import Sun 
-from .weather_def import Weather
-from .wind_def import Wind
-
+# from .sun_def import Sun 
+# from .weather_def import Weather
+# from .wind_def import Wind
+from .class_def import Sun, Weather, Wind
 
 def printinTerminal(weather,wind,sun):
     #clear interpreter console

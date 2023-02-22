@@ -13,5 +13,10 @@ def callOpenWeatherAPI(city_name:str , user_api:str):
         response.raise_for_status()
         return api_data
     except requests.exceptions.HTTPError as err: 
+        #Error message when api link is not accepted
         print(str(api_data['cod'])+" "+api_data['message'])
-        raise SystemExit(err)
+        #raise SystemExit(err)
+    except (requests.exceptions.ConnectionError, requests.exceptions.ConnectTimeout) as err:
+        #Error message when Connection failed/timed out
+        print("Connection to api.openweathermaps.org failed.")
+        #raise SystemExit(err)
