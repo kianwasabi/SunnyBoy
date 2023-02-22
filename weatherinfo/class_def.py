@@ -1,6 +1,88 @@
 import math
-from weatherinfo.location_def import Location
-from weatherinfo.time_def import Time
+
+class Time(): 
+    def __init__(self, timestamp , timezone):
+        self.year = timestamp.year
+        self.month = timestamp.month
+        self.day = timestamp.day
+        self.hour = timestamp.hour
+        self.minute = timestamp.minute
+        self.second = timestamp.second
+        self.timezone = timezone
+    def getDate(self):
+        '''return date at timezone - string'''
+        d = "{:02d}".format(self.day)
+        m = "{:02d}".format(self.month)
+        y = "{:04d}".format(self.year)
+        return f"{d}.{m}.{y}"
+    def getTime(self):
+        '''return time at Timezone - string'''
+        h = "{:02d}".format(self.hour)
+        m = "{:02d}".format(self.minute)
+        s = "{:02d}".format(self.second)
+        return f"{h}:{m}:{s}"
+    def getTimezone(self):
+        '''return Timezone - string'''
+        return f"{self.timezone}"
+    def _editTimewithTimezone(self):
+        self.hour = self.hour + self.timezone
+
+class Location(Time): 
+    def __init__(self,name,longitude, latitude, timestamp, timezone):
+       Time.__init__(self, timestamp, timezone) 
+       self.name = name
+       self.longitude = longitude
+       self.latitude = latitude
+    def getLocationName(self):
+        return f"{self.name}"
+    def getLongitude(self):
+        return f"{self.longitude}"
+    def getLatitude(self):
+        return f"{self.latitude}"
+
+class Wind(Location):
+    def __init__(self, wind_speed, wind_direction, name,longitude, latitude, timestamp, timezone):
+        Location.__init__(self, name, longitude, latitude, timestamp, timezone)
+        self.speed = wind_speed
+        self.direction = wind_direction     
+    def getWindSpeed(self):
+        return f"{self.speed}"
+    def getDirectionDegree(self):
+        return f"{self.direction}"
+    def getDirectionPoint(self):
+        if(self.direction>337.5):
+            return 'N'
+        if(self.direction>292.5):
+            return 'NW'
+        if(self.direction>247.5):
+            return 'W'
+        if(self.direction>202.5):
+            return 'SW'
+        if(self.direction>157.5):
+            return 'S'
+        if(self.direction>122.5):
+            return 'SE'
+        if(self.direction>67.5):
+            return 'E'
+        if(self.direction>22.5):
+            return 'NE'
+        return 'N'             
+
+class Weather(Location):
+    def __init__(self,temperatur, weather_descr, cloudiness, visibility, name, longitude, latitude, timestamp, timezone):
+        Location.__init__(self, name, longitude, latitude, timestamp, timezone)
+        self.temperatur = temperatur
+        self.weather_descr = weather_descr
+        self.cloudiness = cloudiness
+        self.visibility = visibility  
+    def getTemperatur(self):
+        return f"{self.temperatur}"
+    def getWeatherDiscription(self):
+        return f"{self.weather_descr}"
+    def getCloudiness(self):    
+        return f"{self.cloudiness}"
+    def getVisibility(self):
+        return f"{self.visibility}"
 
 class Sun(Location):
     def __init__(self, timestamp_sunrise, timestamp_sunset, name, longitude, latitude, timestamp, timezone):
@@ -89,3 +171,4 @@ class Sun(Location):
         if(self.azimuth>22.5):
             return 'NE'
         return 'N'
+

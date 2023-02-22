@@ -267,6 +267,11 @@ def set_weatherinformation(cityname:str,device_id:str):
     device_info = get_device_by_device_id(device_id)
     api_key = device_info["api_key"]
     weather, wind, sun = modulWeatherInfo(cityname,api_key)
+    # try: 
+    #     weather, wind, sun = modulWeatherInfo(cityname,api_key)
+    # except Error as e: 
+    #     print("Error:"+e)
+    #     get_current_weatherinformation()
     weatherinformation = {
     'locationname' : weather.getLocationName(),
     'longitude' : weather.getLongitude(), 
