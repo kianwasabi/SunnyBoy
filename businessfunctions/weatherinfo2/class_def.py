@@ -1,4 +1,6 @@
 import math
+import requests
+from collections import defaultdict
 
 class Time(): 
     def __init__(self, timestamp , timezone):
@@ -89,7 +91,7 @@ class Sun(Location):
         Location.__init__(self, name, longitude, latitude, timestamp, timezone)
         self.sunrise = Time(timestamp_sunrise, timezone)
         self.sunset = Time(timestamp_sunset, timezone)
-        self.azimuth, self.elevation  = self._SunPosition()
+        self.azimuth, self.elevation  = self.__SunPosition()
     def getTimeSunrise(self):
         return f"{self.sunrise.getTime()}"
     def getTimeSunset(self):
@@ -100,7 +102,7 @@ class Sun(Location):
         return f"{self.elevation}"
     def getSunPosition(self):
         return self.azimuth, self.elevation
-    def _SunPosition(self):
+    def __SunPosition(self):
         ''' 
         Calculate Azimuth and Elevation
         Source: https://levelup.gitconnected.com/python-sun-position-for-solar-energy-and-research-7a4ead801777
@@ -172,3 +174,41 @@ class Sun(Location):
             return 'NE'
         return 'N'
 
+class WeatherInformation(Sun,Weather,Wind):
+    def __init__(self, timestamp_sunrise, timestamp_sunset, temperatur, weather_descr, cloudiness, visibility, wind_speed, wind_direction, name,longitude, latitude, timestamp, timezone):
+        Sun.__init__(self,timestamp_sunrise, timestamp_sunset, name, longitude, latitude, timestamp, timezone)
+        Weather.__init__(self,temperatur, weather_descr, cloudiness, visibility, name, longitude, latitude, timestamp, timezone)
+        Wind.__init__(self,wind_speed, wind_direction, name,longitude, latitude, timestamp, timezone)
+
+class API():
+    def __init__(self,city_name:str,user_api:str):
+        self.city_name                  = city_name
+        self.user_api                   = user_api
+        self.api_data, self.error_code  = self._callAPI()
+    def _def_value_dict():
+        return "Not Present"
+    def _callAPI(self):
+        api_data = defaultdict(self._def_value_dict)
+        try:
+            complete_api_link = "https://api.openweathermap.org/data/2.5/weather?q="+self.city_name+"&appid="+self.user_api
+            response = requests.get(complete_api_link)
+            api_data = response.json()
+            response.raise_for_status()
+        except requests.exceptions.HTTPError as err: 
+            #Connected to Server successfully BUT API link was not accepted
+            print("HTTP-Error:"+str(api_data['cod'])+" "+api_data['message'])
+            error_code = "API-Error: URL not accepted."
+            return api_data, error_code
+            #raise SystemExit(err)
+        except (requests.exceptions.ConnectionError, 
+                requests.exceptions.ConnectTimeout) as err:
+            #Error message when Connection failed/timed out. 
+            #city name & user api may be correct but remaining link is incorrect
+            print("Connection to api.openweathermaps.org failed.")
+            error_code = "API-Error: Connection failed."
+            return api_data, error_code
+            #raise SystemExit(err)    
+        else: 
+            error_code = "No Errors"
+            return api_data, error_code
+        

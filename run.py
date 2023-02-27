@@ -3,7 +3,6 @@ from database.models import *
 from config import *
 
 def main(): 
-
     drop_db_table()
     create_db_table("schema.sql","processcontrol.sql")
     try: 

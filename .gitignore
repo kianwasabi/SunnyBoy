@@ -26,5 +26,9 @@ venv.bak/
 # Git
 .gitattributes
 
-# Database
+# Database & SQL Init Script
 .db
+processcontrol.sql
+
+# sandbox/test folder
+_test/

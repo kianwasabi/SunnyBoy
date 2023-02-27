@@ -2,14 +2,15 @@
 import sqlite3
 from sqlite3 import Error
 import os
-from weatherinfo.modul_weather_Information import *
+#from businessfunctions.weatherinfo.modul_weather_Information import *
+from businessfunctions.weatherinfo2.modul_weather_Information import modulWeatherInfo
 from collections import defaultdict
 from config import *
+from datetime import datetime
 
 def def_value_dict():
     return "Not Present"
 
-# ------ Database Managment ------
 def connect_to_db():
     '''
     Connect to database. 
@@ -74,7 +75,6 @@ def create_db_table(filename_schema:str, filename_recipescript:str):
     except Error as e:
         print(f"👎 Saving Recipe failed. Error:{e}")        
 
-# ------ Business Functions ------ 
 def get_recipe_by_device_id(device_id):
     ''' 
     get device recipe from database
@@ -266,28 +266,23 @@ def set_weatherinformation(cityname:str,device_id:str):
     inserted_weatherinformation = defaultdict(def_value_dict)
     device_info = get_device_by_device_id(device_id)
     api_key = device_info["api_key"]
-    weather, wind, sun = modulWeatherInfo(cityname,api_key)
-    # try: 
-    #     weather, wind, sun = modulWeatherInfo(cityname,api_key)
-    # except Error as e: 
-    #     print("Error:"+e)
-    #     get_current_weatherinformation()
+    weatherinfo = modulWeatherInfo(cityname,api_key)
     weatherinformation = {
-    'locationname' : weather.getLocationName(),
-    'longitude' : weather.getLongitude(), 
-    'latitude' :weather.getLatitude(),
-    'location_time' : weather.getTime(),
-    'timezone' : weather.getTimezone(),
-    'azimuth': sun.getAzimuth(),
-    'elevation': sun.getElevation(),
-    'sunrise': sun.getTimeSunrise(),
-    'sunset' : sun.getTimeSunset(), 
-    'wind_speed': wind.getWindSpeed(),
-    'wind_direction': wind.getDirectionPoint(),
-    'temperatur': weather.getTemperatur(), 
-    'cloudiness': weather.getCloudiness(), 
-    'weather_description': weather.getWeatherDiscription(),
-    'visibility': weather.getVisibility()
+    'locationname' : weatherinfo.getLocationName(),
+    'longitude' : weatherinfo.getLongitude(), 
+    'latitude' :weatherinfo.getLatitude(),
+    'location_time' : weatherinfo.getTime(),
+    'timezone' : weatherinfo.getTimezone(),
+    'azimuth': weatherinfo.getAzimuth(),
+    'elevation': weatherinfo.getElevation(),
+    'sunrise': weatherinfo.getTimeSunrise(),
+    'sunset' : weatherinfo.getTimeSunset(), 
+    'wind_speed': weatherinfo.getWindSpeed(),
+    'wind_direction': weatherinfo.getDirectionPoint(),
+    'temperatur': weatherinfo.getTemperatur(), 
+    'cloudiness': weatherinfo.getCloudiness(), 
+    'weather_description': weatherinfo.getWeatherDiscription(),
+    'visibility': weatherinfo.getVisibility()
     }
     try:
         conn = connect_to_db()
@@ -374,9 +369,9 @@ def get_weatherinformation_by_id(weatherinformation_id):
             weatherinformation['wind_direction']        = row[11]
             weatherinformation['temperatur']            = row[12]
             weatherinformation['cloudiness']            = row[13]
-            weatherinformation['weather_description']   = row [14] 
-            weatherinformation['visibility']            = row [15]
-            weatherinformation['created']               = row [16]
+            weatherinformation['weather_description']   = row[14] 
+            weatherinformation['visibility']            = row[15]
+            weatherinformation['created']               = row[16]
     except Error as e: 
         print(f"👎 Get weatherinformation by id from database failed. Error: {e}")
     finally:
