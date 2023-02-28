@@ -1,5 +1,8 @@
-# Web-Application Project #1 Weather Information!
-A Weather Application that is connected to the OpenWeather API displays weather information and administers and controls several ioT clients. 
+# Weather Information - Server
+This project consists of two repositories: <br>
+Weather_Information_Server & Weather_Information_Devices <br>
+As you might have guessed, the first repository contains the code for the server, the other for the clients. <br>
+A web application that is connected to the OpenWeather API displays weather information and administers and controls several ioT clients. <br>
 
 ## Idea: 
 Managment of multiple Devices via Rest API
