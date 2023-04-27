@@ -1,8 +1,7 @@
-#from database import models
 import sqlite3
 from sqlite3 import Error
 import os
-from businessfunctions.weatherinfo.modul_weather_Information import modulWeatherInfo
+from packages import modulWeatherInfo
 from collections import defaultdict
 from config import *
 from datetime import datetime

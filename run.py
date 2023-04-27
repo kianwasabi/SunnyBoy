@@ -1,4 +1,4 @@
-from app.routes import *
+from app import *
 from database.models import *
 from config import *
 
