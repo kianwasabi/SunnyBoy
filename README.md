@@ -1,10 +1,10 @@
-# Weather Information - Server
+# SunnyBoy
 This project consists of two repositories: <br>
-Weather_Information_Server & Weather_Information_Devices <br>
+Project "SunnyBoy" a Web Server Application AND Project "MoonY" a ioT Client Application <br>
 As you might have guessed, the first repository contains the code for the server, the other for the clients. <br>
-A web application that is connected to the OpenWeather API displays weather information and administers and controls several ioT clients. <br>
 
 ## Idea: 
+The web application SunnyBoy collect and manages (weather)information and administers and controls several ioT clients. <br>
 Managment of multiple Devices via Rest API
 Web Application
 
