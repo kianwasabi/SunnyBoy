@@ -2,8 +2,7 @@
 import sqlite3
 from sqlite3 import Error
 import os
-#from businessfunctions.weatherinfo.modul_weather_Information import *
-from businessfunctions.weatherinfo2.modul_weather_Information import modulWeatherInfo
+from businessfunctions.weatherinfo.modul_weather_Information import modulWeatherInfo
 from collections import defaultdict
 from config import *
 from datetime import datetime
@@ -268,21 +267,21 @@ def set_weatherinformation(cityname:str,device_id:str):
     api_key = device_info["api_key"]
     weatherinfo = modulWeatherInfo(cityname,api_key)
     weatherinformation = {
-    'locationname' : weatherinfo.getLocationName(),
-    'longitude' : weatherinfo.getLongitude(), 
-    'latitude' :weatherinfo.getLatitude(),
-    'location_time' : weatherinfo.getTime(),
-    'timezone' : weatherinfo.getTimezone(),
-    'azimuth': weatherinfo.getAzimuth(),
-    'elevation': weatherinfo.getElevation(),
-    'sunrise': weatherinfo.getTimeSunrise(),
-    'sunset' : weatherinfo.getTimeSunset(), 
-    'wind_speed': weatherinfo.getWindSpeed(),
-    'wind_direction': weatherinfo.getDirectionPoint(),
-    'temperatur': weatherinfo.getTemperatur(), 
-    'cloudiness': weatherinfo.getCloudiness(), 
-    'weather_description': weatherinfo.getWeatherDiscription(),
-    'visibility': weatherinfo.getVisibility()
+    'locationname' : weatherinfo['location']['name'],
+    'latitude' : weatherinfo['location']['latitude'], 
+    'longitude' : weatherinfo['location']['longitude'],
+    'location_time' : weatherinfo['location']['time']['simple'],
+    'timezone' : weatherinfo['location']['time']['zone_unix'],
+    'azimuth': weatherinfo['sun']['azimuth']['deg'],
+    'elevation': weatherinfo['sun']['elevation']['deg'],
+    'sunrise': weatherinfo['sun']['rise']['simple'],
+    'sunset' : weatherinfo['sun']['set']['simple'], 
+    'wind_speed': weatherinfo['wind']['speed'],
+    'wind_direction': weatherinfo['wind']['direction']['point'],
+    'temperatur': weatherinfo['weather']['temperatur']['current'], 
+    'cloudiness': weatherinfo['weather']['cloudiness'], 
+    'weather_description': weatherinfo['weather']['discription'],
+    'visibility': weatherinfo['weather']['visibility']
     }
     try:
         conn = connect_to_db()
