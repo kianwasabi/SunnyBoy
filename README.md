@@ -12,7 +12,7 @@ Project "SunnyBoy" a Web Server Application AND Project "MoonY" a ioT Client App
   <li><a href="#license">License</a></li>
 </ul>
 <h2>Getting Started</h2>
-<p>The "Sunnyboy" Server Application runs on every server instance as long as python3 is installed. Therefore, it can be used on a hosted server or a raspberry pi running in your local network. </p>
+<p>The "Sunnyboy" Server Application runs on every server instance as long as python3 is installed. Therefore, it can be used on a hosted server in the web or a raspberry pi running in your local network. </p>
 <a href="url"><img src="https://user-images.githubusercontent.com/55065075/216689412-49002b2a-782c-494d-abff-c253f597cb40.png" height="auto" width="500" ></a>
 <h2>Frontend</h2>
 <p>The frontend consists of four routes.<br>
