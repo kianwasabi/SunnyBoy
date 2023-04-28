@@ -1,7 +1,7 @@
 <h2>SunnyBoy </h2>
 <p>This project consists of two repositories:</br>
 Project "SunnyBoy" a Web Server Application AND Project "MoonY" a ioT Client Application </p>
-<p>The idea behind the "SunnyBoy" project is, that the Sunnyboy-Server manages and stores (weather-)information and administers the control of several "MoonY" clients. First, a "MoonY" requests its to-do list from the server. It works through all the received process steps in its to-do list and sends back data to the server whenever a process step is required. The from the Moony collected data are stored in the server's database. All stored to-do lists are editable through a web interface to maximize the system's flexibility. Furthermore, the server and client communication is established by Rest API endpoints. </p>
+<p>The idea behind the "SunnyBoy" project is, that the Sunnyboy-Server manages and stores (weather-)information and administers the control of several "MoonY" clients. First, a "MoonY" requests its to-do list from the server. It works through the received process steps in its to-do list and sends back data to the server whenever a process step requires to do so. The collected data is stored in the server's database. Furthermore, all to-do lists are editable through a web interface to maximize the system's flexibility. The server and client communication is established by Rest API endpoints. </p>
 <h2>Table of Contents</h2>
 <ul>
   <li><a href="#getting-started">Getting Started</a></li>
@@ -27,8 +27,8 @@ Project "SunnyBoy" a Web Server Application AND Project "MoonY" a ioT Client App
 <a href="url"><img src="https://user-images.githubusercontent.com/55065075/216689615-d3a9c125-5d25-4986-9b0b-50e710d2f788.png" height="auto" width="500" ></a>
 <h4>app</h4>
 <p>insert routes/API endpoints here</p>
-<h4>buisnessfunctions</h4>
-<p>...</p>
+<h4>packages</h4>
+<p>scrapes data from my own weather info api - for more information, see: Project weather information api </p>
 <h4>database</h4>
 <p>insert Database ER-Modell here</p>
 <h2>Version</h2>
