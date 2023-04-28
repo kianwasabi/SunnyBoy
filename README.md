@@ -13,7 +13,7 @@ Project "SunnyBoy" a Web Server Application AND Project "MoonY" a ioT Client App
 </ul>
 <h2>Getting Started</h2>
 <p>The "Sunnyboy" Server Application runs on every server instance as long as python3 is installed. Therefore, it can be used on a hosted server in the web or a raspberry pi running in your local network. </p>
-<a href="url"><img src="https://user-images.githubusercontent.com/55065075/216689412-49002b2a-782c-494d-abff-c253f597cb40.png" height="auto" width="500" ></a>
+<a href="url"><img src="https://user-images.githubusercontent.com/55065075/235248025-86310ed0-0836-4ba3-8bf7-e2d25dbefa02.png" height="auto" width="500" ></a>
 <h2>Frontend</h2>
 <p>The frontend consists of four routes.<br>
 <h3>/home</h3>
@@ -24,7 +24,7 @@ Project "SunnyBoy" a Web Server Application AND Project "MoonY" a ioT Client App
 <h2>Backend</h2>
 <h3>System Architecture</h3>
 <p>The server side consits of the three segments as shown in the picture below. </p>
-<a href="url"><img src="https://user-images.githubusercontent.com/55065075/216689615-d3a9c125-5d25-4986-9b0b-50e710d2f788.png" height="auto" width="500" ></a>
+<a href="url"><img src="https://user-images.githubusercontent.com/55065075/235254542-2c8e5483-edde-4a65-a2c4-9c69e754d229.png" height="auto" width="500" ></a>
 <h4>app</h4>
 <p>insert routes/API endpoints here</p>
 <h4>packages</h4>
