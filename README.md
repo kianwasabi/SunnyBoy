@@ -2,6 +2,7 @@
 <p>This project consists of two repositories:</br>
 Project "SunnyBoy" a Web Server Application AND Project "MoonY" a ioT Client Application </p>
 <p>The idea behind the "SunnyBoy" project is, that the Sunnyboy-Server manages and stores (weather-)information and administers the control of several "MoonY" clients. First, a "MoonY" requests its to-do list from the server. It works through the received process steps in its to-do list and sends back data to the server whenever a process step requires to do so. The collected data is stored in the server's database. Furthermore, all to-do lists are editable through a web interface to maximize the system's flexibility. The server and client communication is established by Rest API endpoints. </p>
+<a href="url"><img src="https://user-images.githubusercontent.com/55065075/235290954-111dc593-9f49-4370-8f93-6cd8a38fb147.png" height="auto" width="500" ></a>
 <h2>Table of Contents</h2>
 <ul>
   <li><a href="#getting-started">Getting Started</a></li>
@@ -12,10 +13,10 @@ Project "SunnyBoy" a Web Server Application AND Project "MoonY" a ioT Client App
   <li><a href="#license">License</a></li>
 </ul>
 <h2>Getting Started</h2>
-<p>The "Sunnyboy" Server Application runs on every server instance as long as python3 is installed. Therefore, it can be used on a hosted server in the web or a raspberry pi running in your local network. </p>
-<a href="url"><img src="https://user-images.githubusercontent.com/55065075/235248025-86310ed0-0836-4ba3-8bf7-e2d25dbefa02.png" height="auto" width="500" ></a>
+<p>The "Sunnyboy" Server Application runs on every server instance as long as python3 is installed. Therefore, it can be used on a hosted web server in  or a raspberry pi operating in your local network. For safety reasons, it is recommended to operate only in a secure environment! </p>
+
 <h2>Frontend</h2>
-<p>The frontend consists of four routes.<br>
+<p>The frontend consists of tree urls paths "/", "/processcontrol" and "/about".<br>
 <h3>/home</h3>
 <p>Here, the last in the servers database stored weatherinformations are displayed. The user can edit the requested location by editing the entry in the textfield. By pushing the Update-button, the weatherinformation are updated. </p>
 <a href="url"><img src="https://user-images.githubusercontent.com/55065075/234973144-7887be5f-5e5a-40b3-bfe8-94379d13c3f3.png" height="auto" width="500" ></a>
