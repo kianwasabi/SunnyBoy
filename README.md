@@ -32,7 +32,7 @@ Project "SunnyBoy" a Web Server Application AND Project "MoonY" a ioT Client App
 <h4>database</h4>
 <p>insert Database ER-Modell here</p>
 <h2>Version</h2>
-<p>V1 042023</p>
+<p>V1 042023 (!still in development!)</p>
 <h2>Built-with</h2>
 <p>Flask, SQLite3</p>
 <h2>license</h2>
